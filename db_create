@@ -1,0 +1,52 @@
+CREATE TABLE Display
+(
+DisplayID serial NOT NULL,
+Location text NOT NULL,
+PRIMARY KEY (DisplayID)
+);
+
+CREATE TABLE Capability
+(
+CapabilityID serial NOT NULL,
+Description text NOT NULL,
+PRIMARY KEY (CapabilityID)
+);
+
+CREATE TABLE DisplayCapability
+(
+CapabilityID serial NOT NULL,
+DisplayID serial NOT NULL,
+FOREIGN KEY (CapabilityID) REFERENCES Capability(CapabilityID),
+FOREIGN KEY (DisplayID) REFERENCES Display(DisplayID)
+);
+
+CREATE TABLE Usr
+(
+UserID serial,
+Name text NOT NULL,
+Netid varchar(6) NOT NULL,
+Nnumber char(9) NOT NULL,
+AccessGroup int DEFAULT 0,
+ACL int DEFAULT 0,
+PRIMARY KEY (UserID),
+CONSTRAINT uc_User UNIQUE (Netid, Nnumber)
+);
+
+
+CREATE TABLE Task
+(
+TaskID serial,
+UserID serial NOT NULL,
+CreatedAt date DEFAULT NOW(),
+AccessGroup int DEFAULT 0,
+PRIMARY KEY (TaskID),
+FOREIGN KEY (UserID) REFERENCES Usr(UserID)
+);
+
+CREATE TABLE Schedule
+(
+TaskID serial NOT NULL,
+DisplayID serial NOT NULL,
+FOREIGN KEY (TaskID) REFERENCES Task(TaskID),
+FOREIGN KEY (DisplayID) REFERENCES Display(DisplayID)
+);
