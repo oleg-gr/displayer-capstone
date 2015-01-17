@@ -63,8 +63,8 @@ DATABASES = {
         'NAME': 'displayer',
         'USER': 'displayer',
         'PASSWORD': 'displayer',
-        'HOST': '',
-        'PORT': '',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
