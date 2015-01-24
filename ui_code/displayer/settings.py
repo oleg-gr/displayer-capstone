@@ -86,3 +86,17 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Login URL
+LOGIN_URL = 'django.contrib.auth.views.login'
+
+# Redirect after login
+LOGIN_REDIRECT_URL = '/'
+
+# Template directories
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    'displayer/templates',
+)

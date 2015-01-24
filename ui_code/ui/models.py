@@ -31,8 +31,10 @@ class Location(models.Model):
 
 
 class Display(models.Model):
-    """Specifies location and capabilities of a display"""
+    """Specifies location and capabilities of a display
+    Also acts as a user so it can access '*/display' to display its tasks"""
 
+    user = models.OneToOneField(User)
     location = models.ForeignKey(Location)
     capabilities = models.ManyToManyField(Capability)
 
