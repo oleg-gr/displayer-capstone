@@ -34,7 +34,7 @@ class Display(models.Model):
     """Specifies location and capabilities of a display
     Also acts as a user so it can access '*/display' to display its tasks"""
 
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, primary_key=True)
     location = models.ForeignKey(Location)
     capabilities = models.ManyToManyField(Capability)
 
@@ -45,7 +45,7 @@ class Display(models.Model):
 
 class DisplayerUser(models.Model):
     """DisplayerUser extends django user to store data about user"""
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, primary_key=True)
     n_number = models.CharField(max_length=9)
 
     class Meta:
@@ -57,6 +57,8 @@ class Task(models.Model):
     """Specifies reusable task; user specifies who created the task"""
     user = models.ForeignKey(User)
     description = models.CharField(max_length=200)
+    # type of task (maps to capabilities)
+    type = models.ForeignKey(Capability)
     # public tasks are visible to everyone
     public = models.BooleanField(default=False)
 
