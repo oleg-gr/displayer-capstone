@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.contrib.auth import authenticate
 
-from ui.models import Display, User
+from ui.models import Display, User, Schedule
 
 @login_required
 def index(request):
@@ -33,13 +33,13 @@ def is_display_check(user):
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
 def manage(request):
-
-    context = {}
+    schedules = Schedule.get_for_user(request.user)
+    context = {'schedules':schedules}
     return render(request, 'manage.html', context)
 
 @login_required
 @user_passes_test(is_display_check, redirect_field_name='/manage')
 def display(request):
-
-    context = {}
+    display = Display.get_for_display(request.user)
+    context = {'display':display}
     return render(request, 'display.html', context)

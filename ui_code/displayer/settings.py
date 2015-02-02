@@ -87,8 +87,11 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 # Login URL
-LOGIN_URL = 'django.contrib.auth.views.login'
+LOGIN_URL = 'login'
 
 # Redirect after login
 LOGIN_REDIRECT_URL = '/'

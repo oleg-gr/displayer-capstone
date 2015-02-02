@@ -18,3 +18,6 @@ admin.site.register(Task)
 
 from ui.models import Schedule
 admin.site.register(Schedule)
+
+from ui.models import Media
+admin.site.register(Media)
