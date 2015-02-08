@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for media in display.0.task.media %}
-    <img src="/media/{{media.media}}"><br>
+    {% for display in display %}
+    Task {{forloop.counter}}:<br>
+        {% for media in display.task.media %}
+            <img src="/media/{{media.media}}"><br>
+        {% endfor %}
     {% endfor %}
 {% endblock %}
