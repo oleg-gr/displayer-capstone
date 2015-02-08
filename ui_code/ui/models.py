@@ -17,19 +17,26 @@ class Capability(models.Model):
     def __str__(self):
         return self.description
 
+    def displays_list(self):
+        disp = Display.objects.filter(capabilities=self)
+        return "; ".join([x.user.username for x in disp])
+
 
 
 class Location(models.Model):
     """Specifies what location a display is at"""
 
-    description = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
 
     class Meta:
         db_table = "displayer_location"
 
     def __str__(self):
-        return self.description
+        return self.name
 
+    def displays_list(self):
+        disp = Display.objects.filter(location=self)
+        return "; ".join([x.user.username for x in disp])
 
 
 class Display(models.Model):
@@ -54,8 +61,15 @@ class Display(models.Model):
             display_context.append(d)
         return display_context
 
+    def capabilities_list(self):
+        cap = self.capabilities.all()
+        return "; ".join([x.description for x in cap])
+
     class Meta:
         db_table = "displayer_display"
+
+    def __str__(self):
+        return self.user.username
 
 
 
@@ -66,6 +80,9 @@ class DisplayerUser(models.Model):
 
     class Meta:
         db_table = "displayer_user"
+
+    def __str__(self):
+        return self.user.username
 
 
 
@@ -81,7 +98,8 @@ class Task(models.Model):
     class Meta:
         db_table = "displayer_task"
 
-
+    def __str__(self):
+        return self.description
 
 class Media(models.Model):
     """Stores pictures, sounds, videos"""

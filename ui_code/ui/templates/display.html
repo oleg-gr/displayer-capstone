@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<img src="/media/{{display.0.task.media.0.media}}">
+    {% for media in display.0.task.media %}
+    <img src="/media/{{media.media}}"><br>
+    {% endfor %}
 {% endblock %}
