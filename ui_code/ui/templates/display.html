@@ -7,10 +7,15 @@ Display | Displayer
 {% block navbar %} {% endblock %}
 
 {% block content %}
-    {% for display in display %}
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Running display logic...</h3>
+        </div>
+    </div>
+{#     {% for display in display %}
     Task {{forloop.counter}}:<br>
         {% for media in display.task.media %}
             <img src="/media/{{media.media}}"><br>
         {% endfor %}
-    {% endfor %}
+    {% endfor %} #}
 {% endblock %}

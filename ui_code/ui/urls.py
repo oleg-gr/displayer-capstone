@@ -7,5 +7,6 @@ urlpatterns = patterns('',
    url(r'^display$', views.display, name='display'),
    url(r'^tasks$', views.tasks, name='tasks'),
    url(r'^displays$', views.displays, name='displays'),
-   url(r'^custom_task$', views.custom_task, name='custom_task')
+   url(r'^custom_task$', views.custom_task, name='custom_task'),
+   url(r'^displays_login_info$', views.displays_login_info, name='displays_login_info')
 )

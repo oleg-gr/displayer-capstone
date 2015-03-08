@@ -61,6 +61,28 @@ class Display(models.Model):
             display_context.append(d)
         return display_context
 
+    @classmethod
+    def get_basic_display_info(self):
+        all_displays = Display.objects.all()
+        list_of_displays = []
+        for display in all_displays:
+            display_entry = {
+                'id' : display.user_id,
+                'name': display.user.username,
+                'location' : display.location.name,
+                'capabilities': "<br>".join([file.description for file in Capability.objects.filter(display=display)])
+                }
+            list_of_displays.append(display_entry)
+        return list_of_displays
+
+    @classmethod
+    def get_login_info(self):
+        all_displays = Display.objects.all()
+        list_of_displays_login_info = {}
+        for display in all_displays:
+            print display.user.last_login
+        return list_of_displays_login_info
+
     def capabilities_list(self):
         cap = self.capabilities.all()
         return "; ".join([x.description for x in cap])

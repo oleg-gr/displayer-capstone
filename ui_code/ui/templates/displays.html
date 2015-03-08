@@ -12,4 +12,27 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12 top-mrg-20">
+            <table class="table table-hover">
+                <thead>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Capabilities</th>
+                    <th>Active</th>
+                </thead>
+                <tbody>
+                    {% for display in list_of_displays %}
+                        <tr data-id="{{ display.id }}">
+                            <td>{{ display.name }}</td>
+                            <td>{{ display.location }}</td>
+                            <td>{{ display.capabilities|safe }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}
