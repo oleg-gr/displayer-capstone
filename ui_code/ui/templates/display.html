@@ -4,6 +4,11 @@
 Display | Displayer
 {% endblock %}
 
+{% block depends %}
+    {% load static %}
+    <script src="{% static 'js/display/heartbeat.js' %}"></script>
+{% endblock %}
+
 {% block navbar %} {% endblock %}
 
 {% block content %}

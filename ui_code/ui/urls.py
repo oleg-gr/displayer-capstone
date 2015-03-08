@@ -2,11 +2,19 @@ from django.conf.urls import patterns, include, url
 from ui import views
 
 urlpatterns = patterns('',
-   url(r'^$', views.index, name='index'),
-   url(r'^manage$', views.manage, name='manage'),
-   url(r'^display$', views.display, name='display'),
-   url(r'^tasks$', views.tasks, name='tasks'),
-   url(r'^displays$', views.displays, name='displays'),
-   url(r'^custom_task$', views.custom_task, name='custom_task'),
-   url(r'^displays_login_info$', views.displays_login_info, name='displays_login_info')
+    # main redirector
+    url(r'^$', views.index, name='index'),
+
+    # display URL
+    url(r'^display$', views.display, name='display'),
+    # display API
+    url(r'^display_heartbeat$', views.display_heartbeat, name='display_heartbeat'),
+
+    # user URL
+    url(r'^manage$', views.manage, name='manage'),
+    url(r'^tasks$', views.tasks, name='tasks'),
+    url(r'^displays$', views.displays, name='displays'),
+    url(r'^custom_task$', views.custom_task, name='custom_task'),
+    # user API
+    url(r'^displays_login_info$', views.displays_login_info, name='displays_login_info')
 )

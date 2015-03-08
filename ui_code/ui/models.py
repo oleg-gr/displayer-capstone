@@ -46,6 +46,7 @@ class Display(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     location = models.ForeignKey(Location)
     capabilities = models.ManyToManyField(Capability)
+    last_active = models.DateTimeField(default=datetime.now())
 
     @classmethod
     def get_for_display(self, display):
@@ -63,29 +64,33 @@ class Display(models.Model):
 
     @classmethod
     def get_basic_display_info(self):
+        # Get basic info for listing displays
         all_displays = Display.objects.all()
         list_of_displays = []
         for display in all_displays:
+            print display.__dict__
             display_entry = {
                 'id' : display.user_id,
                 'name': display.user.username,
                 'location' : display.location.name,
-                'capabilities': "<br>".join([file.description for file in Capability.objects.filter(display=display)])
-                }
+                'capabilities': "<br>".join(display.capabilities_list())
+            }
             list_of_displays.append(display_entry)
         return list_of_displays
 
     @classmethod
     def get_login_info(self):
+        # Lists id's of displays and when they were active
         all_displays = Display.objects.all()
         list_of_displays_login_info = {}
         for display in all_displays:
-            print display.user.last_login
+            list_of_displays_login_info[display.user_id] = display.last_active.strftime("%Y-%m-%d %H:%M:%S")
         return list_of_displays_login_info
 
     def capabilities_list(self):
-        cap = self.capabilities.all()
-        return "; ".join([x.description for x in cap])
+        # returns list of capabilities for a display
+        all_capabilities = self.capabilities.all()
+        return [capability.description for capability in all_capabilities]
 
     class Meta:
         db_table = "displayer_display"

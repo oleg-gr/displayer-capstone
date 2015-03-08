@@ -10,6 +10,8 @@ from django.http import HttpResponse
 
 import json
 
+from datetime import datetime
+
 
 
 
@@ -53,6 +55,17 @@ def display(request):
     return render(request, 'display.html', context)
 
 
+# Display API endpoints
+@login_required
+@user_passes_test(is_display_check, redirect_field_name='/heartbeat')
+def display_heartbeat(request):
+    # updates last_active variable on display
+    display = Display.objects.get(user=request.user)
+    display.last_active = datetime.now()
+    display.save()
+    return HttpResponse('')
+
+
 
 
 # User logic
@@ -85,9 +98,7 @@ def custom_task(request):
     return render(request, 'custom_task.html', context)
 
 
-
-
-# API endpoints
+# User API endpoints
 
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
