@@ -5,10 +5,41 @@
 {% endblock %}
 
 {% block depends %}
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/jquery.gridster.min.css' %}">
     <script src="{% static 'js/jquery.gridster.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/custom_task/style.css' %}">
+    <script src="{% static 'js/custom_task/script.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    Make custom task
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Custom Task <small>Interface to create a custom task</small></h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="gridster">
+                    <div data-row="1" data-col="1" data-sizex="1" data-sizey="1"></div>
+                    <div data-row="2" data-col="1" data-sizex="1" data-sizey="1"></div>
+                    <div data-row="3" data-col="1" data-sizex="1" data-sizey="1"></div>
+
+                    <div data-row="1" data-col="2" data-sizex="2" data-sizey="1"></div>
+                    <div data-row="2" data-col="2" data-sizex="2" data-sizey="2"></div>
+
+                    <div data-row="1" data-col="4" data-sizex="1" data-sizey="1"></div>
+                    <div data-row="2" data-col="4" data-sizex="2" data-sizey="1"></div>
+                    <div data-row="3" data-col="4" data-sizex="1" data-sizey="1"></div>
+
+                    <div data-row="1" data-col="5" data-sizex="1" data-sizey="1"></div>
+                    <div data-row="3" data-col="5" data-sizex="1" data-sizey="1"></div>
+
+                    <div data-row="1" data-col="6" data-sizex="1" data-sizey="1"></div>
+                    <div data-row="2" data-col="6" data-sizex="1" data-sizey="2"></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
