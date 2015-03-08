@@ -17,15 +17,29 @@
 
 <body>
 
-    <div id="nav_bar" class="container-fluid">
-        <p>Dispalyer app</p>
-        {% if user.is_authenticated %}
-            {{ user }}
-            <a href="{% url 'django.contrib.auth.views.logout' %}">logout</a>
-        {% endif %}
-    </div>
+    {% block navbar %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Displayer</a>
+            </div>
 
-    <div id="content" class="container-fluid">
+            <ul class="nav navbar-nav">
+            {% load bootstrap_extras %}
+                <li class="{% active_page request "manage" %}"><a href="{% url "manage" %}">Scheduled <span class="sr-only">(current)</span></a></li>
+                <li class="{% active_page request "tasks" %}"><a href="{% url "tasks" %}">Tasks</a></li>
+                <li class="{% active_page request "displays" %}"><a href="{% url "displays" %}">Displays</a></li>
+            </ul>
+
+            <div class="navbar-right">
+                <p class="navbar-text">Signed in as {{ user }}</p>
+                <a class="btn btn-default btn-sm navbar-btn" href="{% url 'django.contrib.auth.views.logout' %}">Log out</a>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <div id="content" class="container">
         {% block content %}{% endblock %}
     </div>
 

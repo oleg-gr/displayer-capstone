@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 
+{% block title %}
+    Scheduled | Displayer
+{% endblock %}
+
 {% block content %}
-<ul>
-    {% for schedule in schedules %}
-        <li>Task {{schedule.info.id}} <br>
-        Description: {{ schedule.info.description|safe }} <br>
-        Display: {{ schedule.display.name|safe }} <br>
-        Task: {{ schedule.task.description|safe }} ({{ schedule.task.type|safe|lower }}) <br>
-        Media (number of files): {{ schedule.task.media|length }}
-        </li>
-    {% endfor %}
-</ul>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Scheduled <small>List of scheduled tasks</small></h3>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12  top-mrg-20">
+        <ul>
+            {% for schedule in schedules %}
+                <li>Task {{schedule.info.id}} <br>
+                Description: {{ schedule.info.description|safe }} <br>
+                Display: {{ schedule.display.name|safe }} <br>
+                Task: {{ schedule.task.description|safe }} ({{ schedule.task.type|safe|lower }}) <br>
+                Media (number of files): {{ schedule.task.media|length }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

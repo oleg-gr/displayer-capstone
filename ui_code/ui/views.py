@@ -6,9 +6,9 @@ from django.contrib.auth import authenticate
 
 from ui.models import Display, User, Schedule
 
+# redirect based on whether a user is a display or not
 @login_required
 def index(request):
-    # redirect based on whether a user is a display or not
     current_user = request.user
     if is_display_check(current_user):
         return redirect('ui.views.display')
@@ -30,6 +30,16 @@ def is_display_check(user):
 
     return is_display
 
+# Display logic
+@login_required
+@user_passes_test(is_display_check, redirect_field_name='/manage')
+def display(request):
+    display = Display.get_for_display(request.user)
+    context = {'display':display}
+    return render(request, 'display.html', context)
+
+
+# User logic
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
 def manage(request):
@@ -38,14 +48,20 @@ def manage(request):
     return render(request, 'manage.html', context)
 
 @login_required
-@user_passes_test(is_display_check, redirect_field_name='/manage')
-def display(request):
-    display = Display.get_for_display(request.user)
-    context = {'display':display}
-    return render(request, 'display.html', context)
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
+def tasks(request):
+    context = {}
+    return render(request, 'tasks.html', context)
+
+@login_required
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
+def displays(request):
+    context = {}
+    return render(request, 'displays.html', context)
 
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
 def custom_task(request):
     context = {}
     return render(request, 'custom_task.html', context)
+

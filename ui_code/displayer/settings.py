@@ -107,3 +107,9 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     'displayer/templates',
 )
+
+# Pass requst to templates
+TEMPLATE_CONTEXT_PROCESSORS = (
+  'django.contrib.auth.context_processors.auth',
+  'django.core.context_processors.request',
+)

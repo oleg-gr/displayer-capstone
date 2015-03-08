@@ -1,0 +1,16 @@
+.top-mrg-10 {
+    margin-top: 10px;
+}
+
+.top-mrg-20 {
+    margin-top: 20px;
+}
+
+.top-mrg-30 {
+    margin-top: 30px;
+}
+
+/*To move stuff away from the navbar*/
+body {
+    padding-top: 70px;
+}
