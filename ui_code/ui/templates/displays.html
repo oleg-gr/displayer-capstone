@@ -4,6 +4,11 @@
     Displays | Displayer
 {% endblock %}
 
+{% block depends %}
+    {% load static %}
+    <script src="{% static 'js/displays/heartbeat_checker.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
     <div class="row">
@@ -14,7 +19,7 @@
 
     <div class="row">
         <div class="col-md-12 top-mrg-20">
-            <table class="table table-hover">
+            <table class="table table-hover" id="displays_list">
                 <thead>
                     <th>Name</th>
                     <th>Location</th>
@@ -27,7 +32,7 @@
                             <td>{{ display.name }}</td>
                             <td>{{ display.location }}</td>
                             <td>{{ display.capabilities|safe }}</td>
-                            <td></td>
+                            <td class="active_display"></td>
                         </tr>
                     {% endfor %}
                 </tbody>

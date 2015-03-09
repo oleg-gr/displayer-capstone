@@ -65,10 +65,9 @@ class Display(models.Model):
     @classmethod
     def get_basic_display_info(self):
         # Get basic info for listing displays
-        all_displays = Display.objects.all()
+        all_displays = Display.objects.all().order_by('-last_active')
         list_of_displays = []
         for display in all_displays:
-            print display.__dict__
             display_entry = {
                 'id' : display.user_id,
                 'name': display.user.username,
@@ -80,11 +79,13 @@ class Display(models.Model):
 
     @classmethod
     def get_login_info(self):
-        # Lists id's of displays and when they were active
+        # Lists id's of displays and seconds since last active
         all_displays = Display.objects.all()
         list_of_displays_login_info = {}
+        now = datetime.now()
         for display in all_displays:
-            list_of_displays_login_info[display.user_id] = display.last_active.strftime("%Y-%m-%d %H:%M:%S")
+            last_active = display.last_active
+            list_of_displays_login_info[display.user_id] = (now - last_active).total_seconds()
         return list_of_displays_login_info
 
     def capabilities_list(self):

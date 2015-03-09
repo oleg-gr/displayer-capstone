@@ -1,19 +1,19 @@
 var interval = 15000;
 
-function doAjax() {
+function doHeartbeat() {
     $.ajax({
             type: 'GET',
             url: '/display_heartbeat',
             complete: function (data) {
                     // Schedule the next
-                    setTimeout(doAjax, interval);
+                    setTimeout(doHeartbeat, interval);
             }
     });
 }
 
 $(function(){ //DOM Ready
 
-    // Update every 15 seconds
-    doAjax();
+    // Update every interval seconds
+    doHeartbeat();
 
 });
