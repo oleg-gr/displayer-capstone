@@ -4,6 +4,11 @@
     Scheduled | Displayer
 {% endblock %}
 
+{% block depends %}
+    {% load static %}
+    <script src="{% static 'js/manage/active_checker.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="row">
@@ -12,19 +17,27 @@
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-md-12 top-mrg-20">
-        <ul>
-            {% for schedule in schedules %}
-                <li>Task {{schedule.info.id}} <br>
-                Description: {{ schedule.info.description|safe }} <br>
-                Display: {{ schedule.display.name|safe }} <br>
-                Task: {{ schedule.task.description|safe }} ({{ schedule.task.type|safe|lower }}) <br>
-                Media (number of files): {{ schedule.task.media|length }}
-                </li>
-            {% endfor %}
-        </ul>
+        <table class="table table-hover" id="schedules_list">
+            <thead>
+                <th></th>
+                <th>Type</th>
+                <th>Displays</th>
+                <th>Active</th>
+            </thead>
+            <tbody>
+                {% for schedule in schedules %}
+                    <tr data-id="{{ schedule.id }}">
+                        <td>{{ schedule.description }}</td>
+                        <td>{{ schedule.task_type }}</td>
+                        <td>{{ schedule.displays|safe }}</td>
+                        <td class="active_display"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
+
 {% endblock %}

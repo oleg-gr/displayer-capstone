@@ -48,6 +48,7 @@ class Display(models.Model):
     capabilities = models.ManyToManyField(Capability)
     last_active = models.DateTimeField(default=datetime.now())
 
+    # TO-DO: rewrite this
     @classmethod
     def get_for_display(self, display):
         display = Schedule.objects.filter(display=display,
@@ -150,33 +151,33 @@ class Schedule(models.Model):
     start = models.DateTimeField(default=timezone.now())
     end = models.DateTimeField(default=(timezone.now() + timedelta(days=1)))
 
+    # TO-DO: fill in displays (requires changing model and making groups
+    # of displays)
     @classmethod
-    def get_for_user(self, user):
-        schedules = self.objects.filter(user=user)
-        schedules_context = []
-        for sh in schedules:
-            d = collections.defaultdict(lambda: None)
-            d['info'] = {
-                'description': sh.description,
-                'id': sh.id,
-                'start': sh.start,
-                'end': sh.end
-                }
-            d['display'] = {
-                'name': sh.display.user,
-                'id': sh.display.user.id
-                }
-            d['task'] = {
-                'description': sh.task.description,
-                'type': sh.task.type.description,
-                'media': [
-                        {
-                            'id':file.id
-                        } for file in Media.objects.filter(task=sh.task)
-                    ]
-                }
-            schedules_context.append(d)
-        return schedules_context
+    def get_list_of_schedules(self, user):
+        # Returns basic info about schedules
+        all_schedules_for_user = self.objects.filter(user=user).order_by("-end")
+        schedules_info = []
+        for schedule in all_schedules_for_user:
+            d = {
+                'id' : schedule.id,
+                'description' : schedule.description,
+                'displays' : "<br>".join([]),
+                'task_type' : schedule.task.type.description
+            }
+            schedules_info.append(d)
+        return schedules_info
+
+    @classmethod
+    def get_schedules_active_info(self, user):
+        # Lists id's of displays and seconds since last active
+        all_schedules_for_user = self.objects.filter(user=user)
+        list_of_schedules = {}
+        now = datetime.now()
+        for schedule in all_schedules_for_user:
+            ends_at = schedule.end
+            list_of_schedules[schedule.id] = (now - ends_at).total_seconds()
+        return list_of_schedules
 
     class Meta:
         db_table = "displayer_schedule"

@@ -1,3 +1,8 @@
+# TO-DO:
+# - Figure out why index.html doesn't redirect
+
+
+
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -73,8 +78,8 @@ def display_heartbeat(request):
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
 def manage(request):
-    schedules = Schedule.get_for_user(request.user)
-    context = {'schedules':schedules}
+    schedules = Schedule.get_list_of_schedules(request.user)
+    context = { 'schedules' : schedules }
     return render(request, 'manage.html', context)
 
 @login_required
@@ -106,4 +111,12 @@ def displays_login_info(request):
     # Lists whether displays are logged in or not
     displays_login_information = Display.get_login_info()
     data = json.dumps(displays_login_information)
+    return HttpResponse(data, content_type='application/json')
+
+@login_required
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
+def schedules_active_info(request):
+    # Lists whether displays are logged in or not
+    schedules_active_info = Schedule.get_schedules_active_info(request.user)
+    data = json.dumps(schedules_active_info)
     return HttpResponse(data, content_type='application/json')

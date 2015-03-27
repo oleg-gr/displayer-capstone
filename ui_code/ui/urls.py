@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^displays$', views.displays, name='displays'),
     url(r'^custom_task$', views.custom_task, name='custom_task'),
     # user API
-    url(r'^displays_login_info$', views.displays_login_info, name='displays_login_info')
+    url(r'^displays_login_info$', views.displays_login_info, name='displays_login_info'),
+    url(r'^schedules_active_info$', views.schedules_active_info, name='schedules_active_info'),
 )

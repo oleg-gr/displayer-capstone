@@ -1,4 +1,4 @@
-var interval = 10000;
+var interval = 15000;
 
 function doHeartbeatCheck() {
     $.getJSON( '/displays_login_info', function (data) {
