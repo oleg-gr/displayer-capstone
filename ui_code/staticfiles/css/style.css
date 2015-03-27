@@ -10,6 +10,10 @@
     margin-top: 30px;
 }
 
+.top-mrg-40 {
+    margin-top: 40px;
+}
+
 /*To move stuff away from the navbar*/
 body {
     padding-top: 70px;

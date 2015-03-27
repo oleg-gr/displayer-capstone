@@ -11,9 +11,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 login_forbidden = user_passes_test(lambda u: u.is_anonymous(), login_url='/')
 
 urlpatterns = patterns('',
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^login', login_forbidden(login), name='login'),
-    url(r'^logout', logout, {'next_page': '/'}),
+    url(r'^admin$', include(admin.site.urls)),
+    url(r'^login$', login_forbidden(login), name='login'),
+    url(r'^logout$', logout, {'next_page': '/'}),
     url(r'^', include('ui.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
