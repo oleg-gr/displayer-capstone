@@ -1,3 +1,13 @@
-.gridster ul li {
-    background-color: black;
+.gridster-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.gridster div.component {
+    background-color: #000;
+}
+
+#timeline-nav {
+    width:100%;
 }

@@ -14,6 +14,23 @@
     margin-top: 40px;
 }
 
+.btm-mrg-10 {
+    margin-bottom: 10px;
+}
+
+.btm-mrg-20 {
+    margin-bottom: 20px;
+}
+
+.btm-mrg-30 {
+    margin-bottom: 30px;
+}
+
+.btm-mrg-40 {
+    margin-bottom: 40px;
+}
+
+
 /*To move stuff away from the navbar*/
 body {
     padding-top: 70px;
