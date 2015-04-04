@@ -139,6 +139,7 @@ class Task(models.Model):
 class Media(models.Model):
     """Stores pictures, sounds, videos"""
     media = models.FileField()
+    # can be empty (for previews and other things)
     task = models.ForeignKey(Task, null=True, blank=True, default = None)
 
     class Meta:

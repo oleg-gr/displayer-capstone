@@ -92,7 +92,7 @@ def tasks(request):
 def displays(request):
     # Lists basic info about displays
     list_of_displays = Display.get_basic_display_info()
-    context = { 'list_of_displays' : list_of_displays }
+    context = { 'displays' : list_of_displays }
     return render(request, 'displays.html', context)
 
 @login_required

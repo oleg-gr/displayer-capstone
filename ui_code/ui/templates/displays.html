@@ -11,6 +11,7 @@
 
 {% block content %}
 
+    {% if displays %}
     <div class="row">
         <div class="col-md-12">
             <h3>Displays<br /><small>Displays registered in the system</small></h3>
@@ -27,7 +28,7 @@
                     <th>Active</th>
                 </thead>
                 <tbody>
-                    {% for display in list_of_displays %}
+                    {% for display in displays %}
                         <tr data-id="{{ display.id }}">
                             <td>{{ display.name }}</td>
                             <td>{{ display.location }}</td>
@@ -39,5 +40,9 @@
             </table>
         </div>
     </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert"><span class="sr-only">Warning:</span>&nbsp;&nbsp;There are no displayes registered in the system. Please contact administrator.</div>
+    {% endif %}
+
 
 {% endblock %}
