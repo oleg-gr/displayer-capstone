@@ -4,27 +4,103 @@
     Tasks | Displayer
 {% endblock %}
 
+{% block depends %}
+    {% load static %}
+    <script src="{% static 'js/tasks/jquery.matchHeight-min.js' %}"></script>
+    <script src="{% static 'js/tasks/script.js' %}"></script>
+    <script src="{% static 'js/manage/active_checker.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
     <section id="template">
     <div class="row">
         <div class="col-md-12">
-            <h3>Template Tasks <small>Easily reusable tasks for your convenience</small></h3>
+            <h3>Template Tasks<br /><small>Easily reusable tasks for your convenience</small></h3>
         </div>
     </div>
+
+    <div class="row top-mrg-30">
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;&nbsp;Image</h3>
+            <p>Upload an image and choose when, where and how you want it to be displayed. This is good for quick <strong>event anouncements</strong>, <strong>photography showcases</strong>, and similar tasks.</p>
+            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><span class="glyphicon glyphicon-film" aria-hidden="true"></span>&nbsp;&nbsp;Video</h3>
+            <p>Upload a video and choose when, where and how you want it to be displayed. This is good for quick <strong>event invitations</strong>, <strong>film showcases</strong>, and similar tasks. Be aware that most of the displays have audio muted.</p>
+            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;<span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp;<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;&nbsp;Slideshow</h3>
+            <p>Upload multiple pictures and choose when, where and how you want it to be displayed. This is good for <strong>SIG showcasing</strong>, <strong>displaying pictures from events</strong>, bundling <strong>several event anouncements</strong> together and similar tasks.</p>
+            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><span class="glyphicon glyphicon-camera" aria-hidden="true"></span>&nbsp;&nbsp;Capture Image</h3>
+            <p>Capture an image with display's camera or a kinect (if displays have it installed). That's not good for anything... That's acutally kind of creepy.</p>
+            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>&nbsp;&nbsp;Capture Video</h3>
+            <p>Capture a video with display's camera or a kinect (if displays have it installed). That's not good for anything... That's even creepier than capturing an image.</p>
+            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>&nbsp;<span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>&nbsp;<span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>&nbsp;&nbsp;Portal</h3>
+            <p>Connect two displays and stream their respective camera feeds into each other's screens. Good for <strong>having fun</strong>.</p>
+            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     </section>
 
-    <div class="row top-mrg-40">
+    <div class="row top-mrg-30">
         <div class="col-md-12">
-            <a href="custom_task" class="btn btn-primary">Create new</a>
-            <div class="alert alert-warning top-mrg-10" role="alert"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Before creating new task we highly suggest looking at <a href="#template" class="alert-link">Template tasks</a> first</div>
+            <h3>Custom Task<br /><small>Your own highly specialized task</small></h3>
+            <div class="alert alert-warning top-mrg-30" role="alert"><a href="custom_task" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Create new</a>&emsp;&emsp;<span class="glyphicon glyphicon-alert" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Before creating new task we highly suggest looking at <a href="#template" class="alert-link">Template tasks</a> first</div>
         </div>
     </div>
 
-    <div class="row top-mrg-20">
+    <div class="row top-mrg-30">
         <div class="col-md-12">
-            <h3>Previous Tasks <small>Tasks that you have previously created and that can be reused</small></h3>
+            <h3>Previous Tasks<br /><small>Tasks that you have previously created and that can be reused/rescheduled</small></h3>
         </div>
     </div>
+
+    {% include "snippets/tasks_list.html" %}
+
+    {% include "snippets/back_to_top.html" %}
 
 {% endblock %}

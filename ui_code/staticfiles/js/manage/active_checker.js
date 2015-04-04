@@ -7,11 +7,12 @@ function doActiveCheck() {
                         var seconds = data[id];
                         var time = convertSecondsToWords(seconds);
                         if (seconds <= 0) {
-                            $(this).attr('class', 'success');
+                            $(this).removeClass('danger');
+                            $(this).addClass('success');
                             $(this).find(".active_display").text("The task will run for another " + time);
                         } else {
-                            $(this).attr('class', 'danger');
-
+                            $(this).removeClass('success');
+                            $(this).addClass('danger');
                             $(this).find(".active_display").text("The task finished " + time + " ago");
                         }
                     });
@@ -28,5 +29,9 @@ $(function(){ //DOM Ready
 
     // Update every interval seconds
     doActiveCheck();
+
+    $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
 
 });

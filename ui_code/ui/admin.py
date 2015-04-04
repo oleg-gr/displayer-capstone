@@ -48,8 +48,10 @@ admin.site.register(Task, TaskAdmin)
 from ui.models import Schedule
 
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'description', 'display', 'task', 'start', 'end')
-    list_filter = ('user', 'display', 'task')
+    list_display = ('id', 'user', 'description', 'task', 'start', 'end')
+    # 'displays_list'
+    # 'display__user__username'
+    list_filter = ('user', 'task')
     search_fields = ['description']
 
 admin.site.register(Schedule, ScheduleAdmin)

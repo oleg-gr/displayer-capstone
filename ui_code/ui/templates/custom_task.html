@@ -1,117 +1,141 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Custom Task | Displayer
+Custom Task | Displayer
 {% endblock %}
 
 {% block depends %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/jquery.gridster.min.css' %}">
-    <script src="{% static 'js/jquery.gridster.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/custom_task/style.css' %}">
-    <script src="{% static 'js/custom_task/script.js' %}"></script>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/jquery.gridster.min.css' %}">
+<script src="{% static 'js/jquery.gridster.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/custom_task/style.css' %}">
+<script src="{% static 'js/custom_task/script.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Custom Task <small>Interface to create a custom task</small></h3>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Custom Task<br /><small>Interface to create a custom task</small></h3>
     </div>
+</div>
 
-    <div class="row top-mrg-10 btm-mrg-30">
+<div class="row top-mrg-10">
 
-        <div class="col-md-12">
+    <div class="col-md-12">
 
-            <div class="alert alert-info top-mrg-10" role="alert"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="sr-only">Info:</span>&nbsp;&nbsp;This is a panel to create and customize a task. You can add images, videos, interactive elements, etc and arrange them in the timeline. Each element in the timeline represents a particular action (i.e. show a picture) that can be triggered at a certain time and last a certain amount of time. As of now, the maximum time a task can take is 5 minutes. If you need to display a movie or a slideshow, please use Template Tasks.</div>
+        <div class="alert alert-info top-mrg-10" role="alert"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="sr-only">Info:</span>&nbsp;&nbsp;This is a panel to create and customize a task. You can add images, videos, interactive elements, etc and arrange them in the timeline. Each element in the timeline represents a particular action (i.e. show a picture) that can be triggered at a certain time and last a certain amount of time. As of now, the maximum time a task can take is 5 minutes. If you need to display a movie or a slideshow, please use Template Tasks.</div>
 
-            <ul class="nav navbar-nav" role="tablist">
-                <div class="navbar-brand">Jump to: </div>
-                <li><a href="#0s">0 sec</a></li>
-                <li><a href="#1m">1 min</a></li>
-                <li><a href="#2m">2 min</a></li>
-                <li><a href="#3m">3 min</a></li>
-                <li><a href="#4m">4 min</a></li>
-                <li><a href="#5m">5 min</a></li>
-            </ul>
+        <ul class="nav navbar-nav" role="tablist">
+            <div class="navbar-brand">Jump to: </div>
+            <li><a href="#0s">0 sec</a></li>
+            <li><a href="#1m">1 min</a></li>
+            <li><a href="#2m">2 min</a></li>
+            <li><a href="#3m">3 min</a></li>
+            <li><a href="#4m">4 min</a></li>
+            <li><a href="#5m">5 min</a></li>
+        </ul>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="gridster-container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="gridster-container">
 
-                        <div id="gridster1">
-                            <div class="gridster">
-                                <div data-row="1" data-col="1" data-sizex="15" data-sizey="1" id="0s">| 0s</div>
-                                <div data-row="1" data-col="15" data-sizex="15" data-sizey="1">| 15s</div>
-                                <div data-row="1" data-col="30" data-sizex="15" data-sizey="1">| 30s</div>
-                                <div data-row="1" data-col="45" data-sizex="15" data-sizey="1">| 45s</div>
-                                <div data-row="1" data-col="60" data-sizex="15" data-sizey="1" id="1m">| 1m</div>
-                                <div data-row="1" data-col="75" data-sizex="15" data-sizey="1">| 1m15s</div>
-                                <div data-row="1" data-col="90" data-sizex="15" data-sizey="1">| 1m30s</div>
-                                <div data-row="1" data-col="105" data-sizex="15" data-sizey="1">| 1m45s</div>
-                                <div data-row="1" data-col="120" data-sizex="15" data-sizey="1" id="2m">| 2m</div>
-                                <div data-row="1" data-col="135" data-sizex="15" data-sizey="1">| 2m15s</div>
-                                <div data-row="1" data-col="150" data-sizex="15" data-sizey="1">| 2m30s</div>
-                                <div data-row="1" data-col="165" data-sizex="15" data-sizey="1">| 2m45s</div>
-                                <div data-row="1" data-col="180" data-sizex="15" data-sizey="1" id="3m">| 3m</div>
-                                <div data-row="1" data-col="195" data-sizex="15" data-sizey="1">| 3m15s</div>
-                                <div data-row="1" data-col="210" data-sizex="15" data-sizey="1">| 3m30s</div>
-                                <div data-row="1" data-col="225" data-sizex="15" data-sizey="1">| 3m45s</div>
-                                <div data-row="1" data-col="240" data-sizex="15" data-sizey="1" id="4m">| 4m</div>
-                                <div data-row="1" data-col="255" data-sizex="15" data-sizey="1">| 4m15s</div>
-                                <div data-row="1" data-col="270" data-sizex="15" data-sizey="1">| 4m30s</div>
-                                <div data-row="1" data-col="285" data-sizex="7" data-sizey="1">| 4m45s</div>
-                                <div data-row="1" data-col="292" data-sizex="8" data-sizey="1" id="5m" class="text-right">5m |</div>
-                            </div>
+                    <div id="gridster1">
+                        <div class="gridster">
+                            <div data-row="1" data-col="1" data-sizex="15" data-sizey="1" id="0s">|0s</div>
+                            <div data-row="1" data-col="15" data-sizex="15" data-sizey="1">|15s</div>
+                            <div data-row="1" data-col="30" data-sizex="15" data-sizey="1">|30s</div>
+                            <div data-row="1" data-col="45" data-sizex="15" data-sizey="1">|45s</div>
+                            <div data-row="1" data-col="60" data-sizex="15" data-sizey="1" id="1m">|1m</div>
+                            <div data-row="1" data-col="75" data-sizex="15" data-sizey="1">|1m15s</div>
+                            <div data-row="1" data-col="90" data-sizex="15" data-sizey="1">|1m30s</div>
+                            <div data-row="1" data-col="105" data-sizex="15" data-sizey="1">|1m45s</div>
+                            <div data-row="1" data-col="120" data-sizex="15" data-sizey="1" id="2m">|2m</div>
+                            <div data-row="1" data-col="135" data-sizex="15" data-sizey="1">|2m15s</div>
+                            <div data-row="1" data-col="150" data-sizex="15" data-sizey="1">|2m30s</div>
+                            <div data-row="1" data-col="165" data-sizex="15" data-sizey="1">|2m45s</div>
+                            <div data-row="1" data-col="180" data-sizex="15" data-sizey="1" id="3m">|3m</div>
+                            <div data-row="1" data-col="195" data-sizex="15" data-sizey="1">|3m15s</div>
+                            <div data-row="1" data-col="210" data-sizex="15" data-sizey="1">|3m30s</div>
+                            <div data-row="1" data-col="225" data-sizex="15" data-sizey="1">|3m45s</div>
+                            <div data-row="1" data-col="240" data-sizex="15" data-sizey="1" id="4m">|4m</div>
+                            <div data-row="1" data-col="255" data-sizex="15" data-sizey="1">|4m15s</div>
+                            <div data-row="1" data-col="270" data-sizex="15" data-sizey="1">|4m30s</div>
+                            <div data-row="1" data-col="285" data-sizex="7" data-sizey="1">|4m45s</div>
+                            <div data-row="1" data-col="292" data-sizex="8" data-sizey="1" id="5m" class="text-right">5m|</div>
                         </div>
-
-                        <div id="gridster2">
-                            <div class="gridster">
-                                <div data-row="2" data-col="1" data-sizex="1" data-sizey="1" class="component"></div>
-                                <div data-row="3" data-col="1" data-sizex="1" data-sizey="1" class="component"></div>
-                                <div data-row="4" data-col="1" data-sizex="1" data-sizey="1" class="component"></div>
-                            </div>
-                        </div>
-
                     </div>
+
+                    <div id="gridster2" class="btm-mrg-20">
+                        <div class="gridster">
+                            <div data-row="1" data-col="1" data-sizex="15" data-sizey="1"></div>
+                            <div data-row="1" data-col="15" data-sizex="15" data-sizey="1"></div>
+                            <div data-row="1" data-col="30" data-sizex="15" data-sizey="1"></div>
+                            <div data-row="1" data-col="45" data-sizex="15" data-sizey="1"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-            <h4 class="top-mrg-30">Add more components:</h4>
-            <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Add picture
-            </button>
-
-            <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-film" aria-hidden="true"></span> Add video
-            </button>
-
-            <button type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-music" aria-hidden="true"></span> Add audio
-            </button>
-
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Add interactive <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Capture image</a></li>
-                    <li><a href="#">Capture video</a></li>
-                    <li><a href="#">Create portal</a></li>
-                </ul>
-            </div>
-
-            <h4 class="top-mrg-30">Complete task creation:</h4>
-            <button type="button" class="btn btn-success">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save & Schedule
-            </button>
-
-            <button type="button" class="btn btn-info">
-                <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Preview
-            </button>
-
         </div>
+
+        <h4 class="top-mrg-30">Add more components:</h4>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#picture-modal">
+            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Add picture
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="picture-modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="glyphicon glyphicon-picture" aria-hidden="true" data-toggle="modal" data-target="#picture-modal"></span> Add picture
+            </div>
+            <form action="{% url 'upload_pic' %}" method="post" enctype="multipart/form-data" id="form_image">{% csrf_token %}
+              <div class="modal-body">
+                <div class="alert alert-info top-mrg-10" role="alert"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="sr-only">Info:</span>&nbsp;&nbsp;Please choose a picture to upload</div>
+                <p>
+                    <input id="id_image" type="file" class="" name="image">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="upload_image" disabled>Upload</button>
+            </div>
+        </form>
     </div>
+</div>
+</div>
+
+<button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-film" aria-hidden="true"></span> Add video
+</button>
+
+<button type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-music" aria-hidden="true"></span> Add audio
+</button>
+
+<div class="btn-group" data-toggle="tooltip" data-placement="top" title="Coming soon...">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" disabled>
+        <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Add interactive <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Capture image</a></li>
+        <li><a href="#">Capture video</a></li>
+        <li><a href="#">Create portal</a></li>
+    </ul>
+</div>
+
+<h4 class="top-mrg-30">Complete task creation:</h4>
+<button type="button" class="btn btn-success">
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Save & Schedule
+</button>
+
+<button type="button" class="btn btn-info">
+    <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>&nbsp;Preview
+</button>
+
+</div>
+</div>
 
 {% endblock %}

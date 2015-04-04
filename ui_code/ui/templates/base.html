@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}Displayer{% endblock %}</title>
-
-
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/helper_functions.js' %}"></script>
-    <!-- jQuery -->
-    <script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    {% block depends %}{% endblock %}
+  <title>{% block title %}Displayer{% endblock %}</title>
 </head>
 
 <body>
 
-    {% block navbar %}
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="manage">Displayer</a>
-            </div>
+  {% block navbar %}
+  <nav class="navbar navbar-default navbar-fixed-top" id="top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="manage">Displayer</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          {% load bootstrap_extras %}
+          <li class="{% active_page request "manage" %}"><a href="{% url "manage" %}">Schedule <span class="sr-only">(current)</span></a></li>
+          <li class="{% active_page request "tasks" %}"><a href="{% url "tasks" %}">Tasks</a></li>
+          <li class="{% active_page request "displays" %}"><a href="{% url "displays" %}">Displays</a></li>
+        </ul>
 
-            <ul class="nav navbar-nav">
-            {% load bootstrap_extras %}
-                <li class="{% active_page request "manage" %}"><a href="{% url "manage" %}">Scheduled <span class="sr-only">(current)</span></a></li>
-                <li class="{% active_page request "tasks" %}"><a href="{% url "tasks" %}">Tasks</a></li>
-                <li class="{% active_page request "displays" %}"><a href="{% url "displays" %}">Displays</a></li>
-            </ul>
-
-            <div class="navbar-right">
-                <p class="navbar-text">Signed in as {{ user }}</p>
-                <a class="btn btn-default btn-sm navbar-btn" href="{% url 'django.contrib.auth.views.logout' %}">Log out</a>
-            </div>
+        <div class="navbar-right text-right">
+          <p class="navbar-text rgt-mrg-20">Signed in as {{ user }}</p>
+          <a class="btn btn-default btn-sm navbar-btn rgt-mrg-20" href="{% url 'django.contrib.auth.views.logout' %}">Log out</a>
         </div>
-    </nav>
-    {% endblock %}
+      </div><!-- /.navbar-collapse -->
 
-    <div id="content" class="container">
-        {% block content %}{% endblock %}
+
     </div>
+  </nav>
+  {% endblock %}
+
+  <div id="content" class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- jQuery -->
+  <script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="{% static 'js/helper_functions.js' %}"></script>
+  {% block depends %}{% endblock %}
 
 </body>

@@ -1,13 +1,18 @@
 .gridster-container {
-    position: relative;
     width: 100%;
     overflow-x: auto;
 }
 
-.gridster div.component {
-    background-color: #000;
+#gridster2 > div > div{
+    background-color: #CCC;
 }
 
 #timeline-nav {
     width:100%;
+}
+
+.modal-backdrop {
+    bottom: 0;
+    position: fixed;
+    z-index: 1039;
 }

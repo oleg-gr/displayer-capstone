@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
@@ -92,7 +93,7 @@ class Display(models.Model):
     def capabilities_list(self):
         # returns list of capabilities for a display
         all_capabilities = self.capabilities.all()
-        return [capability.description for capability in all_capabilities]
+        return "; ".join([capability.description for capability in all_capabilities])
 
     class Meta:
         db_table = "displayer_display"
@@ -133,7 +134,7 @@ class Task(models.Model):
 class Media(models.Model):
     """Stores pictures, sounds, videos"""
     media = models.FileField()
-    task = models.ForeignKey(Task)
+    task = models.ForeignKey(Task, null=True, blank=True, default = None)
 
     class Meta:
         db_table = "displayer_media"
@@ -146,7 +147,7 @@ class Schedule(models.Model):
     user = models.ForeignKey(User)
     # description of why the task needs to exist (optional)
     description = models.CharField(max_length=200)
-    display = models.ForeignKey(Display)
+    display = models.ManyToManyField(Display)
     task = models.ForeignKey(Task)
     start = models.DateTimeField(default=timezone.now())
     end = models.DateTimeField(default=(timezone.now() + timedelta(days=1)))
@@ -157,6 +158,7 @@ class Schedule(models.Model):
     def get_list_of_schedules(self, user):
         # Returns basic info about schedules
         all_schedules_for_user = self.objects.filter(user=user).order_by("-end")
+        print all_schedules_for_user
         schedules_info = []
         for schedule in all_schedules_for_user:
             d = {
@@ -179,5 +181,15 @@ class Schedule(models.Model):
             list_of_schedules[schedule.id] = (now - ends_at).total_seconds()
         return list_of_schedules
 
+    def displays_list(self):
+        disp = Display.objects.filter(schedule=self)
+        return "; ".join([x.user.username for x in disp])
+
     class Meta:
         db_table = "displayer_schedule"
+
+
+# classes for forms
+class ImageUploadForm(forms.Form):
+    """Image upload form."""
+    image = forms.ImageField()

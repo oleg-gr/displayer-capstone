@@ -30,8 +30,49 @@
     margin-bottom: 40px;
 }
 
+.rgt-mrg-10 {
+    margin-right: 10px;
+}
+
+.rgt-mrg-20 {
+    margin-right: 20px;
+}
+
+.rgt-mrg-30 {
+    margin-right: 30px;
+}
+
+.rgt-mrg-40 {
+    margin-right: 40px;
+}
+
+.lft-mrg-10 {
+    margin-left: 10px;
+}
+
+.lft-mrg-20 {
+    margin-left: 20px;
+}
+
+.lft-mrg-30 {
+    margin-left: 30px;
+}
+
+.lft-mrg-40 {
+    margin-left: 40px;
+}
 
 /*To move stuff away from the navbar*/
 body {
     padding-top: 70px;
+    padding-bottom: 20px;
+}
+
+/*Clickable tables*/
+tr.clickable-row {
+    cursor: pointer;
+}
+
+#toTop {
+
 }

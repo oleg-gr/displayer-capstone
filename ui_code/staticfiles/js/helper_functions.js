@@ -15,3 +15,21 @@ function convertSecondsToWords(seconds) {
     }
 
 }
+
+$(function(){ //DOM Ready
+
+    // init tooltips
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    //smooth scroll to top
+    $("#to-top").on('click', function(event){
+        event.preventDefault();
+        $('body,html').animate({
+            scrollTop: 0 ,
+            }, 300
+        );
+    });
+
+});

@@ -1,17 +1,12 @@
-# TO-DO:
-# - Figure out why index.html doesn't redirect
-
-
-
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.contrib.auth import authenticate
 
-from ui.models import Display, User, Schedule
+from ui.models import *
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 
 import json
 
@@ -29,7 +24,10 @@ def index(request):
     if is_display_check(current_user):
         return redirect('ui.views.display')
     else:
-        return redirect('ui.views.manage')
+        if Schedule.objects.filter(user = request.user):
+            return redirect('ui.views.manage')
+        else:
+            return redirect('ui.views.tasks')
 
 def is_not_display_check(user):
 
@@ -85,7 +83,8 @@ def manage(request):
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
 def tasks(request):
-    context = {}
+    schedules = Schedule.get_list_of_schedules(request.user)
+    context = { 'schedules' : schedules }
     return render(request, 'tasks.html', context)
 
 @login_required
@@ -101,6 +100,28 @@ def displays(request):
 def custom_task(request):
     context = {}
     return render(request, 'custom_task.html', context)
+
+@login_required
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
+def upload_pic(request):
+    print "Post:", request.POST
+    print "Files:", request.FILES
+    try:
+        if request.method == 'POST':
+            form = ImageUploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                m = Media(media = form.cleaned_data['image'])
+                m.save()
+                return HttpResponse('')
+        return HttpResponseBadRequest('')
+    except:
+        return HttpResponseBadRequest('')
+
+@login_required
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
+def schedule_task(request, id):
+    context = { }
+    return render(request, 'schedule_task.html', context)
 
 
 # User API endpoints
