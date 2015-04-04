@@ -21,7 +21,7 @@ admin.site.register(Location, LocationAdmin)
 from ui.models import Display
 
 class DisplayAdmin(admin.ModelAdmin):
-    list_display = ('user', 'location', 'capabilities_list')
+    list_display = ('user', 'location', 'capabilities_list_formatted')
     list_filter = ['location', 'capabilities']
     search_fields = ['user__username', 'location__name']
 

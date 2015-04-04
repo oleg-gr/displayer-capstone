@@ -24,7 +24,7 @@ $(function(){ //DOM Ready
     })
 
     //smooth scroll to top
-    $("#to-top").on('click', function(event){
+    $(".to-top").on('click', function(event){
         event.preventDefault();
         $('body,html').animate({
             scrollTop: 0 ,

@@ -10,20 +10,32 @@ Schedule Task | Displayer
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Schedule Task<br /><small>Interface to schedule your task</small></h3>
-        </div>
-    </div>
+    {% if error %}
 
-    <div class="row top-mrg-10">
-
-        <div class="col-md-12">
-
+        <div class="row top-mrg-30">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>&nbsp;&nbsp;{{ error }} <a href="{% url 'tasks' %}" class="alert-link">Select a valid task or create your own.</a></div>
+            </div>
         </div>
 
-    </div>
+    {% else %}
 
-    {% include "snippets/back_to_top.html" %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Schedule Task<br /><small>Interface to schedule your task</small></h3>
+            </div>
+        </div>
+
+        <div class="row top-mrg-10">
+
+            <div class="col-md-12">
+
+            </div>
+
+        </div>
+
+        {% include "snippets/back_to_top.html" %}
+
+    {% endif %}
 
 {% endblock %}

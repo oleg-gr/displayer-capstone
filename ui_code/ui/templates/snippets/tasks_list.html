@@ -20,7 +20,7 @@
                 </tbody>
             </table>
         {% else %}
-            <p class="text-muted">You have <strong>no previously scheduled tasks</strong>.</p>
+        <div class="alert alert-warning" role="alert"><span class="sr-only">Warning:</span>&nbsp;&nbsp;You do not have any previously scheduled tasks. <a href="{% url 'tasks' %}" class="alert-link">Please select one of the template tasks or create your own.</a></div>
         {% endif %}
     </div>
 </div>

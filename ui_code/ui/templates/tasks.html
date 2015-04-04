@@ -13,7 +13,6 @@
 
 {% block content %}
 
-    <section id="template">
     <div class="row">
         <div class="col-md-12">
             <h3>Template Tasks<br /><small>Easily reusable tasks for your convenience</small></h3>
@@ -26,7 +25,7 @@
           <div class="caption">
             <h3><span class="glyphicon glyphicon-picture" aria-hidden="true"></span>&nbsp;&nbsp;Image</h3>
             <p>Upload an image and choose when, where and how you want it to be displayed. This is good for quick <strong>event anouncements</strong>, <strong>photography showcases</strong>, and similar tasks.</p>
-            <p><a href="#" class="btn btn-primary" role="button">Schedule</a></p>
+            <p><a href="{% url "schedule_task" 5 %}" class="btn btn-primary" role="button">Schedule</a></p>
           </div>
         </div>
       </div>
@@ -84,12 +83,11 @@
 
     </div>
 
-    </section>
 
     <div class="row top-mrg-30">
         <div class="col-md-12">
             <h3>Custom Task<br /><small>Your own highly specialized task</small></h3>
-            <div class="alert alert-warning top-mrg-30" role="alert"><a href="custom_task" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Create new</a>&emsp;&emsp;<span class="glyphicon glyphicon-alert" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Before creating new task we highly suggest looking at <a href="#template" class="alert-link">Template tasks</a> first</div>
+            <div class="alert alert-warning top-mrg-30" role="alert"><a href="custom_task" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Create new</a>&emsp;&emsp;<span class="glyphicon glyphicon-alert" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Before creating new task we highly suggest looking at <a href="#top" class="alert-link to-top">Template tasks</a> first</div>
         </div>
     </div>
 

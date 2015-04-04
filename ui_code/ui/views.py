@@ -60,7 +60,7 @@ def display(request):
 
 # Display API endpoints
 @login_required
-@user_passes_test(is_display_check, redirect_field_name='/heartbeat')
+@user_passes_test(is_display_check, redirect_field_name='/manage')
 def display_heartbeat(request):
     # updates last_active variable on display
     display = Display.objects.get(user=request.user)
@@ -120,6 +120,14 @@ def upload_pic(request):
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
 def schedule_task(request, id):
+    try:
+        task = Task.objects.get(id=id)
+    except Task.DoesNotExist:
+        return render(request, 'schedule_task.html',
+            { 'error' : "Requested task does not exist." })
+    if not task.public and task.user != request.user:
+        return render(request, 'schedule_task.html',
+            { 'error' : "You cannot edit requested task." })
     context = { }
     return render(request, 'schedule_task.html', context)
 

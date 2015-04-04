@@ -93,7 +93,12 @@ class Display(models.Model):
     def capabilities_list(self):
         # returns list of capabilities for a display
         all_capabilities = self.capabilities.all()
-        return "; ".join([capability.description for capability in all_capabilities])
+        return [capability.description for capability in all_capabilities]
+
+    def capabilities_list_formatted(self):
+        # returns list of capabilities for a display as a string
+        # required for proper displaying of admin panel
+        return "; ".join(self.capabilities_list())
 
     class Meta:
         db_table = "displayer_display"
@@ -158,7 +163,6 @@ class Schedule(models.Model):
     def get_list_of_schedules(self, user):
         # Returns basic info about schedules
         all_schedules_for_user = self.objects.filter(user=user).order_by("-end")
-        print all_schedules_for_user
         schedules_info = []
         for schedule in all_schedules_for_user:
             d = {
