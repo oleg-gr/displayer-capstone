@@ -1,0 +1,14 @@
+#error_alert {
+    display: none;
+}
+
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}

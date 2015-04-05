@@ -128,7 +128,9 @@ def schedule_task(request, id):
     if not task.public and task.user != request.user:
         return render(request, 'schedule_task.html',
             { 'error' : "You cannot edit requested task." })
-    context = { 'id' : id }
+    context = { 'task_type' : task.type.id,
+        'is_public' : task.public,
+        'description' : task.description }
     return render(request, 'schedule_task.html', context)
 
 
