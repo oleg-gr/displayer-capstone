@@ -195,6 +195,6 @@ class Schedule(models.Model):
 
 
 # classes for forms
-class ImageUploadForm(forms.Form):
-    """Image upload form."""
-    image = forms.ImageField()
+# class ImageUploadForm(forms.Form):
+#     """Image upload form."""
+#     image = forms.ImageField()

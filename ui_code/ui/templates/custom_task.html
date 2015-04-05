@@ -92,7 +92,6 @@ Custom Task | Displayer
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <span class="glyphicon glyphicon-picture" aria-hidden="true" data-toggle="modal" data-target="#picture-modal"></span> Add picture
             </div>
-            <form action="{% url 'upload_pic' %}" method="post" enctype="multipart/form-data" id="form_image">{% csrf_token %}
               <div class="modal-body">
                 <div class="alert alert-info top-mrg-10" role="alert"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span><span class="sr-only">Info:</span>&nbsp;&nbsp;Please choose a picture to upload</div>
                 <p>
@@ -102,7 +101,6 @@ Custom Task | Displayer
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="upload_image" disabled>Upload</button>
             </div>
-        </form>
     </div>
 </div>
 </div>

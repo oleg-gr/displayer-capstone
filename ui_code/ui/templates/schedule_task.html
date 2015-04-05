@@ -6,6 +6,79 @@ Schedule Task | Displayer
 
 {% block depends %}
 {% load static %}
+<script src="{% static 'js/jquery.fine-uploader/jquery.fine-uploader.min.js' %}"></script>
+<link href="{% static 'js/jquery.fine-uploader/fine-uploader.min.css' %}" rel="stylesheet">
+
+<!-- This is the markup for file uploader -->
+<script type="text/template" id="qq-template">
+    <div class="qq-uploader-selector qq-uploader">
+        <!-- disable global progress bar for single-file uploads -->
+        {% if id != '5' %}
+            <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container progress">
+                <div class="qq-total-progress-bar-selector qq-progress-bar bar"></div>
+            </div>
+        {% endif %}
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+            <span>Drop files here to upload</span>
+        </div>
+        <div class="qq-upload-button-selector btn btn-success">
+            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>&nbsp;&nbsp;Upload a file
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+            <span>Processing dropped files...</span>
+            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list top-mrg-20">
+            <li>
+                <div class="qq-progress-bar-container-selector progress">
+                    <div class="qq-progress-bar-selector qq-progress-bar bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+                <span class="qq-upload-file-selector qq-upload-file"></span>
+                <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                <span class="qq-upload-size-selector qq-upload-size"></span>
+                <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+                <a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
+                <a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
+                <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </li>
+        </ul>
+    </div>
+</script>
+
+<script>
+$(function(){
+    var uploader = $("#uploader").fineUploader({
+        debug: true,
+        request: {
+            endpoint: '/upload'
+        },
+        chunking: {
+            enabled: true,
+        },
+        deleteFile: {
+            enabled: true,
+            endpoint: '/upload'
+        },
+        // don't allow multiple files to be uploaded for certain tasks
+        {% if id == '5' %}
+        multiple: false,
+        {% endif %}
+        // task-specific options
+        {% if id == '5' %}
+        validation: {
+            acceptFiles: 'image/gif,image/jpeg,image/png',
+            allowedExtensions: ['gif', 'jpeg', 'png'],
+            sizeLimit: 512000
+        }
+        {% endif %}
+    });
+
+
+});
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -26,13 +99,39 @@ Schedule Task | Displayer
             </div>
         </div>
 
-        <div class="row top-mrg-10">
+        <div class="panel panel-default">
+            <div class="panel-body">
 
-            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h4>Upload required media<br /><small>Upload files required for your task</small></h4>
+
+                        {% if id == '5' %}
+                            <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 512KB</strong> in size are allowed.</div>
+                            <div id="uploader" class="top-mrg-20"></div>
+                        {% elif id == '6' %}
+                            video, etc.
+                        {% else %}
+
+                        <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Success:</span>&nbsp;&nbsp;The files were uploaded during the previous step.</div>
+
+                        <button class="btn btn-success" id="schedule"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Schedule</button>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Review and schedule<br /><small>See if all </small></h4>
+                    </div>
+                </div>
 
             </div>
-
         </div>
+
 
         {% include "snippets/back_to_top.html" %}
 

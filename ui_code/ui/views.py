@@ -101,21 +101,21 @@ def custom_task(request):
     context = {}
     return render(request, 'custom_task.html', context)
 
-@login_required
-@user_passes_test(is_not_display_check, redirect_field_name='/display')
-def upload_pic(request):
-    print "Post:", request.POST
-    print "Files:", request.FILES
-    try:
-        if request.method == 'POST':
-            form = ImageUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                m = Media(media = form.cleaned_data['image'])
-                m.save()
-                return HttpResponse('')
-        return HttpResponseBadRequest('')
-    except:
-        return HttpResponseBadRequest('')
+# @login_required
+# @user_passes_test(is_not_display_check, redirect_field_name='/display')
+# def upload_pic(request):
+#     print "Post:", request.POST
+#     print "Files:", request.FILES
+#     try:
+#         if request.method == 'POST':
+#             form = ImageUploadForm(request.POST, request.FILES)
+#             if form.is_valid():
+#                 m = Media(media = form.cleaned_data['image'])
+#                 m.save()
+#                 return HttpResponse('')
+#         return HttpResponseBadRequest('')
+#     except:
+#         return HttpResponseBadRequest('')
 
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
@@ -128,7 +128,7 @@ def schedule_task(request, id):
     if not task.public and task.user != request.user:
         return render(request, 'schedule_task.html',
             { 'error' : "You cannot edit requested task." })
-    context = { }
+    context = { 'id' : id }
     return render(request, 'schedule_task.html', context)
 
 

@@ -87,8 +87,14 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+# Media URL
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# Media root
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Uploads Directory
+UPLOAD_DIRECTORY = os.path.join(MEDIA_ROOT, 'uploads')
+CHUNKS_DIRECTORY = os.path.join(MEDIA_ROOT, 'chunks')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles/'),

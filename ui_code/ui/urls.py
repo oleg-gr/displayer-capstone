@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # user API
     url(r'^displays_login_info$', views.displays_login_info, name='displays_login_info'),
     url(r'^schedules_active_info$', views.schedules_active_info, name='schedules_active_info'),
-    url(r'^upload_pic$', views.upload_pic, name='upload_pic'),
+    # url(r'^upload_pic$', views.upload_pic, name='upload_pic'),
     url(r'^tasks/(?P<id>\d+)/info', views.schedule_task, name="info_task"),
     url(r'^tasks/(?P<id>\d+)/schedule', views.schedule_task, name="schedule_task")
 )

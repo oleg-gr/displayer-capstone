@@ -1,65 +1,65 @@
 .top-mrg-10 {
-    margin-top: 10px;
+    margin-top: 10px !important;
 }
 
 .top-mrg-20 {
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 
 .top-mrg-30 {
-    margin-top: 30px;
+    margin-top: 30px !important;
 }
 
 .top-mrg-40 {
-    margin-top: 40px;
+    margin-top: 40px !important;
 }
 
 .btm-mrg-10 {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
 }
 
 .btm-mrg-20 {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
 }
 
 .btm-mrg-30 {
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
 }
 
 .btm-mrg-40 {
-    margin-bottom: 40px;
+    margin-bottom: 40px !important;
 }
 
 .rgt-mrg-10 {
-    margin-right: 10px;
+    margin-right: 10px !important;
 }
 
 .rgt-mrg-20 {
-    margin-right: 20px;
+    margin-right: 20px !important;
 }
 
 .rgt-mrg-30 {
-    margin-right: 30px;
+    margin-right: 30px !important;
 }
 
 .rgt-mrg-40 {
-    margin-right: 40px;
+    margin-right: 40px !important;
 }
 
 .lft-mrg-10 {
-    margin-left: 10px;
+    margin-left: 10px !important;
 }
 
 .lft-mrg-20 {
-    margin-left: 20px;
+    margin-left: 20px !important;
 }
 
 .lft-mrg-30 {
-    margin-left: 30px;
+    margin-left: 30px !important;
 }
 
 .lft-mrg-40 {
-    margin-left: 40px;
+    margin-left: 40px !important;
 }
 
 /*To move stuff away from the navbar*/

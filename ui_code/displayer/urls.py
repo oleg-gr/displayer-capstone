@@ -8,12 +8,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from fine_uploader.views import UploadView
+
 login_forbidden = user_passes_test(lambda u: u.is_anonymous(), login_url='/')
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login$', login_forbidden(login), name='login'),
     url(r'^logout$', logout, {'next_page': '/'}),
+    url(r'^upload(?:/(?P<qquuid>\S+))?', UploadView.as_view(), name='upload'),
     url(r'^', include('ui.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
