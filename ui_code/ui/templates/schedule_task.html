@@ -52,7 +52,7 @@
 <script type="text/template" id="screens-template">
     <select multiple id='screenselect' class='form-control'>
         {% for screen in screens %}
-            <option val="{{screen.id}}">{{screen}}</option>
+            <option value="{{screen.user.id}}">{{screen}}</option>
         {% endfor %}
     </select>
 </script>
@@ -89,18 +89,81 @@ $(function() {
         {% endif %}
     });
 
+    var raiseError = function(message) {
+        $("#error_message").text(message);
+        $("#error_alert").show(200);
+        window.setTimeout(function() {
+            $("#error_alert").hide(200);
+        }, 2000);
+    };
+
     $('#schedule').on('click', function() {
-        var file = $("#uploader").fineUploader('getUploads');
-        file = file[file.length - 1];
-        if (file && file.status == 'upload successful') {
-            console.log([file]);
+        var files = $("#uploader").fineUploader('getUploads');
+        {% if task_type == 1 %}
+        files = [files[files.length - 1]];
+        if (files[0] && files[0].status == 'upload successful') {
+        {% endif %}
+            var time, screens, duration;
+            if ($("#timeselect").val() == "precise") {
+                var start_h = parseInt($("#start-hour").val());
+                var end_h = parseInt($("#end-hour").val());
+                time = { start : start_h, end : end_h };
+                if (isNaN(start_h) || isNaN(end_h) || start_h>=end_h || (start_h==0 && end_h==24)) {
+                    raiseError("Invalid time range selected");
+                    return;
+                }
+            } else {
+                time = $("#timeselect").val();
+            }
+
+            if ($("#placeselect").val() == "individual") {
+                screens = $("#screenselect").val();
+                if (screens == null || screens.length == 0) {
+                    raiseError("Please select at least one screen");
+                    return;
+                }
+            } else {
+                screens = $("#placeselect").val();
+            }
+
+            if ($("#description").val().length == 0) {
+                raiseError("Please enter a description");
+                return;
+            }
+
             // submit logic
+
+            duration = $("#duration").val();
+
+            var data = {
+                files : files,
+                description : $("#description").val(),
+                dates : {
+                    start : $("#datepicker-start").val(),
+                    end : $("#datepicker-end").val()
+                },
+                options : {
+                    time : time,
+                    screens : screens,
+                    duration : duration
+                },
+                task_type : {{ task_type }}
+            };
+
+            console.log(data);
+
+            $.ajax({
+              type: "POST",
+              url: "/schedule",
+              data: { json_data : JSON.stringify(data),
+                csrfmiddlewaretoken : '{{ csrf_token }}'
+                },
+              dataType: "json",
+              traditional: true
+            });
+
         } else {
-            $("#error_message").text("No files uploaded");
-            $("#error_alert").show(200);
-            window.setTimeout(function() {
-                $("#error_alert").hide(200);
-            }, 2000);
+            raiseError("No files uploaded");
         }
     });
 
@@ -129,6 +192,7 @@ $(function() {
         if (val == "precise") {
             $("#timeselect-container").append(getPicker("start-hour"));
             $("#timeselect-container").append(getPicker("end-hour"));
+            $("#end-hour").append("<option value='24' selected>12am</option>");
             $("#start-hour").on("change", function() {
                 var end = parseInt($("#end-hour").val()), start = parseInt($(this).val());
                 if ( end <= start) {
@@ -202,9 +266,9 @@ $(function() {
             <div class="col-md-6">
                 <h4>Description<br /><small>Add a description that will help to easy understand what your task is performing</small></h4>
                 {% if is_public %}
-                <textarea class="form-control" placeholder="{{ description }}" rows="3"></textarea>
+                <textarea class="form-control" id="description" placeholder="{{ description }}" rows="3"></textarea>
                 {% else %}
-                <textarea class="form-control" rows="3">{{ description }}</textarea>
+                <textarea class="form-control" id="description" rows="3">{{ description }}</textarea>
                 {% endif %}
             </div>
         </div>
@@ -219,9 +283,9 @@ $(function() {
                             </div>
                             <div class="form-group lft-mrg-10">
                                 <div class="input-daterange input-group" id="datepicker">
-                                    <input type="text" class="input-sm form-control" name="start" value="{{ start }}"/>
+                                    <input type="text" id="datepicker-start" class="input-sm form-control" name="start" value="{{ start }}"/>
                                     <span class="input-group-addon">to</span>
-                                    <input type="text" class="input-sm form-control" name="end" value="{{ end }}">
+                                    <input type="text" id="datepicker-end" class="input-sm form-control" name="end" value="{{ end }}">
                                 </div>
                             </div>
                         </form>
@@ -271,6 +335,7 @@ $(function() {
                     <div class="form-group">
                         <p class="inline">seconds at a time.</p>
                     </div>
+                </form>
                 {% endif %}
             </div>
         </div>

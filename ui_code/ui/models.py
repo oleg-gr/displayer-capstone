@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 import collections
 from datetime import datetime
+from jsonfield import JSONField
 
 class Capability(models.Model):
     """Specifies a description of a capability"""
@@ -140,7 +141,8 @@ class Media(models.Model):
     """Stores pictures, sounds, videos"""
     media = models.FileField()
     # can be empty (for previews and other things)
-    task = models.ForeignKey(Task, null=True, blank=True, default = None)
+    task = models.ForeignKey(Task)
+    uuid = models.CharField(max_length=64)
 
     class Meta:
         db_table = "displayer_media"
@@ -151,12 +153,11 @@ class Media(models.Model):
 class Schedule(models.Model):
     """Specifies scheduled tasks; user specifies who scheduled the task"""
     user = models.ForeignKey(User)
-    # description of why the task needs to exist (optional)
-    description = models.CharField(max_length=200)
-    display = models.ManyToManyField(Display)
+    displays = models.ManyToManyField(Display)
     task = models.ForeignKey(Task)
-    start = models.DateTimeField(default=timezone.now())
-    end = models.DateTimeField(default=(timezone.now() + timedelta(days=1)))
+    start = models.DateField(default=timezone.now())
+    end = models.DateField(default=(timezone.now() + timedelta(days=1)))
+    options = JSONField()
 
     # TO-DO: fill in displays (requires changing model and making groups
     # of displays)
@@ -168,7 +169,7 @@ class Schedule(models.Model):
         for schedule in all_schedules_for_user:
             d = {
                 'id' : schedule.id,
-                'description' : schedule.description,
+                'description' : schedule.task.description,
                 'displays' : "<br>".join([]),
                 'task_type' : schedule.task.type.description
             }

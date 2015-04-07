@@ -12,8 +12,6 @@ import json
 
 from datetime import datetime
 
-import time
-
 
 
 
@@ -103,21 +101,64 @@ def custom_task(request):
     context = {}
     return render(request, 'custom_task.html', context)
 
-# @login_required
-# @user_passes_test(is_not_display_check, redirect_field_name='/display')
-# def upload_pic(request):
-#     print "Post:", request.POST
-#     print "Files:", request.FILES
-#     try:
-#         if request.method == 'POST':
-#             form = ImageUploadForm(request.POST, request.FILES)
-#             if form.is_valid():
-#                 m = Media(media = form.cleaned_data['image'])
-#                 m.save()
-#                 return HttpResponse('')
-#         return HttpResponseBadRequest('')
-#     except:
-#         return HttpResponseBadRequest('')
+@login_required
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
+def schedule(request):
+    # try:
+    if request.method == 'POST':
+        data = json.loads(request.POST['json_data'])
+        print data
+        files = data["files"]
+        description = data["description"]
+        dates = data["dates"]
+        options = data["options"]
+        task_type = data["task_type"]
+
+        task = Task(user_id=request.user.id,
+            description=description,
+            type=Capability.objects.get(id=task_type),
+            public=False)
+
+        task.save()
+
+        for file in files:
+            media = Media(media="uploads/" + file['uuid'] + "/" + file['name'],
+                task=task,
+                uuid=file['uuid'])
+            media.save()
+
+        displays = []
+        screens = options['screens']
+        if screens == 'all':
+            displays = Display.objects.all()
+        elif isinstance(screens, list):
+            for screen in screens:
+                displays.append(Display.objects.get(id=int(screen)))
+        else:
+            displays = Display.object.filter(location=Location.objects.get(id=int(screens)))
+            if not displays:
+                return HttpResponseBadRequest('No displays at selected location')
+
+        print dates['start']
+        print datetime.strptime(dates['start'], "%d/%m/%Y")
+
+        schedule = Schedule(user_id=request.user.id,
+            task=task,
+            start=datetime.strptime(dates['start'], "%d/%m/%Y"),
+            end=datetime.strptime(dates['end'], "%d/%m/%Y"),
+            options=options)
+
+        schedule.save()
+
+        for display in displays:
+            schedule.displays.add(display)
+
+    else:
+        return HttpResponseBadRequest('Should be a POST request')
+    # except:
+    #     return HttpResponseBadRequest('Something went wrong, please contact administrator')
+
+    return HttpResponse(data)
 
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
@@ -138,7 +179,6 @@ def schedule_task(request, id):
         end = task.end.strftime("%d/%m/%Y")
     places = Location.objects.all()
     screens = Display.objects.all()
-    print places[0]
     context = { 'task_type' : task.type.id,
         'is_public' : task.public,
         'description' : task.description,
