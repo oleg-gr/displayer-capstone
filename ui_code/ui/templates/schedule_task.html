@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}
-Schedule Task | Displayer
-{% endblock %}
+{% block title %} Schedule Task | Displayer {% endblock %}
 
 {% block depends %}
+
 {% load static %}
 <script src="{% static 'js/jquery.fine-uploader/jquery.fine-uploader.js' %}"></script>
 <link href="{% static 'js/jquery.fine-uploader/fine-uploader.min.css' %}" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/schedule_task/style.css' %}">
-
+<script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datepicker3.min.css' %}">
 <!-- This is the markup for file uploader -->
 <script type="text/template" id="qq-template">
     <div class="qq-uploader-selector qq-uploader">
@@ -27,7 +27,7 @@ Schedule Task | Displayer
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
             <span>Processing dropped files...</span>
-            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
         </span>
         <ul class="qq-upload-list-selector qq-upload-list top-mrg-20">
             <li>
@@ -48,23 +48,33 @@ Schedule Task | Displayer
     </div>
 </script>
 
+<!-- This is the markup for selecting screens -->
+<script type="text/template" id="screens-template">
+    <select multiple id='screenselect' class='form-control'>
+        {% for screen in screens %}
+            <option val="{{screen.id}}">{{screen}}</option>
+        {% endfor %}
+    </select>
+</script>
+
 <script>
-    $(function(){
-        $("#uploader").fineUploader({
-            debug: true,
-            request: {
-                endpoint: '/upload'
-            },
-            chunking: {
-                enabled: true,
-            },
-            deleteFile: {
-                enabled: true,
-                endpoint: '/upload'
-            },
-            params: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
+$(function() {
+
+    $("#uploader").fineUploader({
+        debug: true,
+        request: {
+            endpoint: '/upload'
+        },
+        chunking: {
+            enabled: true,
+        },
+        deleteFile: {
+            enabled: true,
+            endpoint: '/upload'
+        },
+        params: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
         // don't allow multiple files to be uploaded for certain tasks
         {% if task_type == 1 %}
         multiple: false,
@@ -79,64 +89,115 @@ Schedule Task | Displayer
         {% endif %}
     });
 
-        $('#schedule').on('click', function() {
-            var file = $("#uploader").fineUploader('getUploads');
-            file = file[file.length-1];
-            if (file && file.status == 'upload successful') {
-                console.log([file]);
+    $('#schedule').on('click', function() {
+        var file = $("#uploader").fineUploader('getUploads');
+        file = file[file.length - 1];
+        if (file && file.status == 'upload successful') {
+            console.log([file]);
             // submit logic
         } else {
             $("#error_message").text("No files uploaded");
             $("#error_alert").show(200);
-            window.setTimeout(function() { $("#error_alert").hide(200); }, 2000);
+            window.setTimeout(function() {
+                $("#error_alert").hide(200);
+            }, 2000);
         }
     });
 
+    $('#datepicker').datepicker({
+        format: "dd/mm/yyyy",
+        startDate: "today",
+        todayBtn: "linked",
+        autoclose: true
     });
-</script>
 
+    var hours = function(offset) {
+        var post = (offset == 1) ? "am" : "pm";
+        var text;
+        for (var i = offset; i < offset+11; i++) {
+            text += '<option value="' + i + '">' + (i - ((offset == 1) ? 0 : 12)) + post + '</option>';
+        }
+        return text;
+    }
+
+    var getPicker = function(id) {
+        return '<select class="form-control" id=' + id + '><option value="0">12am</option>' + hours(1) + '<option value="12">12pm</option>' + hours(13) + '</select>';
+    };
+
+    $('#timeselect').on("change", function() {
+        var val = $("#timeselect option:selected").val();
+        if (val == "precise") {
+            $("#timeselect-container").append(getPicker("start-hour"));
+            $("#timeselect-container").append(getPicker("end-hour"));
+            $("#start-hour").on("change", function() {
+                var end = parseInt($("#end-hour").val()), start = parseInt($(this).val());
+                if ( end <= start) {
+                    $("#end-hour").val(start+1);
+                }
+            });
+            $("#end-hour").on("change", function() {
+                var start = parseInt($("#start-hour").val()), end = parseInt($(this).val());
+                if ( end <= start) {
+                    $("#start-hour").val(end-1);
+                }
+            })
+        } else {
+            $("#start-hour").remove();
+            $("#end-hour").remove();
+        }
+    });
+
+    $('#placeselect').on("change", function() {
+        var val = $("#placeselect option:selected").val();
+        if (val == "individual") {
+            var template = $('#screens-template').html();
+            $("#placeselect-container").append(template);
+        } else {
+            $("#screenselect").remove();
+        }
+    });
+
+    {% if task_type == 1 %}
+    $('#duration').on("keyup", function() {
+        var val = $('#duration').val();
+        if (val != '' && ( isNaN(val) || parseInt(val) > 60 )) {
+            $('#duration').val(60);
+        }
+    });
+    {% endif %}
+
+});
+
+</script>
 {% endblock %}
 
 {% block content %}
 
 {% if error %}
-
 <div class="row top-mrg-30">
     <div class="col-md-12">
         <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>&nbsp;&nbsp;{{ error }} <a href="{% url 'tasks' %}" class="alert-link">Select a valid task or create your own.</a></div>
     </div>
 </div>
-
 {% else %}
-
 <div class="row">
     <div class="col-md-12">
         <h3>Schedule Task<br /><small>Interface to schedule your task</small></h3>
     </div>
 </div>
-
 <div class="panel panel-default">
     <div class="panel-body">
-
         <div class="row">
             <div class="col-md-12">
-
                 <h4>Upload required media<br /><small>Upload files required for your task</small></h4>
-
                 {% if task_type == 1 %}
                 <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 512KB</strong> in size are allowed.</div>
                 <div id="uploader" class="top-mrg-20"></div>
-                {% elif task_type == 2 %}
-                video, etc.
-                {% else %}
-
+                {% elif task_type == 2 %} video, etc. {% else %}
                 <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Success:</span>&nbsp;&nbsp;The files were uploaded during the previous step.</div>
-
                 {% endif %}
-
             </div>
         </div>
-
         <div class="row top-mrg-10">
             <div class="col-md-6">
                 <h4>Description<br /><small>Add a description that will help to easy understand what your task is performing</small></h4>
@@ -147,60 +208,87 @@ Schedule Task | Displayer
                 {% endif %}
             </div>
         </div>
-
         <div class="row top-mrg-10">
             <div class="col-md-10">
                 <h4>Time & Location<br /><small>Select or specify when and where you want to display your task</small></h4>
-
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist" id="tab_navigation">
-                   <li role="presentation" class="active"><a href="#preset" aria-controls="preset" role="tab" data-toggle="tab">Preset</a></li>
-                   <li role="presentation"><a href="#precise" aria-controls="precise" role="tab" data-toggle="tab">Custom</a></li>
-               </ul>
-
-               <!-- Tab panes -->
-               <div class="tab-content">
-                   <div role="tabpanel" class="tab-pane active" id="preset">
-                       <div class="row">
-                           <div class="col-md-12">
-                            <h4>Presets<br /><small>Allow for very simple scheduling. You don't have to worry about specifying too many parameters</small></h4>
-                        </div>
+                <div class="row top-mrg-20 btm-mrg-10">
+                    <div class="col-md-10">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <p class="inline">Display between the following dates</p>
+                            </div>
+                            <div class="form-group lft-mrg-10">
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" name="start" value="{{ start }}"/>
+                                    <span class="input-group-addon">to</span>
+                                    <input type="text" class="input-sm form-control" name="end" value="{{ end }}">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="precise">
-                    <div class="row">
-                        <div class="col-md-12">
-                         <h4>Custom<br /><small>Allows you to choose more precise and customized timing and location for displaying your tasks</small></h4>
 
-                         <div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;We highly recommend to use 'Preset' Time & Location settings before trying to create a custom schedule</div>
+                <div class="row top-mrg-20 btm-mrg-10">
+                    <div class="col-md-10">
+                        <form class="form-inline">
+                            <div class="form-group" id="timeselect-container">
+                                <select class="form-control" id="timeselect">
+                                    <option value="day">all day long</option>
+                                    <option value="noon">at noon (around 12pm)</option>
+                                    <option value="breakfast">during breakfast (around 8am-10am)</option>
+                                    <option value="lunch">during lunch (1pm-3pm)</option>
+                                    <option value="dinner">during dinner (6pm-9pm)</option>
+                                    <option value="precise">select hours</option>
+                                </select>
+                            </div>
+                            <div class="form-group lft-mrg-10">
+                                <p class="inline">on/in</p>
+                            </div>
 
-                     </div>
-                 </div>
-             </div>
-         </div>
+                            <div class="form-group lft-mrg-10" id="placeselect-container">
+                                <select class="form-control" id="placeselect">
+                                    <option value="all">all available screens</option>
+                                    {% for place in places %}
+                                    <option value="{{place.id}}">{{place|lower}}</option>
+                                    {% endfor %}
+                                    <option value="individual">select screens</option>
+                                </select>
+                            </div>
 
-     </div>
- </div>
+                        </form>
+                    </div>
+                </div>
 
 
- <div class="row top-mrg-20">
-    <div class="col-md-12">
-        <h4>Review and schedule<br /><small>See if all steps are completed and schedule the task</small></h4>
+                {% if task_type == 1 %}
+                <form class="form-inline">
+                    <div class="form-group">
+                        <p class="inline">for</p>
+                    </div>
+                    <div class="form-group lft-mrg-10 rgt-mrg-10">
+                        <input class="form-control input-sm text-right inline" type="text" value="5" maxlength="2" id="duration" data-toggle="tooltip" data-placement="top" title="60 seconds max">
+                    </div>
+                    <div class="form-group">
+                        <p class="inline">seconds at a time.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row top-mrg-20">
+            <div class="col-md-12">
+                <h4>Review and schedule<br /><small>See if all steps are completed and schedule the task</small></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-danger" role="alert" id="error_alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>&nbsp;&nbsp;<span id="error_message"></span></div>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-success pull-right" id="schedule"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Schedule</button>
+            </div>
+        </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="alert alert-danger" role="alert" id="error_alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>&nbsp;&nbsp;<span id="error_message"></span></div>
-    </div>
-    <div class="col-md-6">
-        <button class="btn btn-success pull-right" id="schedule"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;Schedule</button>
-    </div>
-</div>
-
-</div>
-</div>
-
 
 {% include "snippets/back_to_top.html" %}
 

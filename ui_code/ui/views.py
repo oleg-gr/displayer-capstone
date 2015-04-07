@@ -12,6 +12,8 @@ import json
 
 from datetime import datetime
 
+import time
+
 
 
 
@@ -128,9 +130,23 @@ def schedule_task(request, id):
     if not task.public and task.user != request.user:
         return render(request, 'schedule_task.html',
             { 'error' : "You cannot edit requested task." })
+    if task.public:
+        start = datetime.now().strftime("%d/%m/%Y")
+        end = (datetime.now() + timedelta(days=1)).strftime("%d/%m/%Y")
+    else:
+        start = task.start.strftime("%d/%m/%Y")
+        end = task.end.strftime("%d/%m/%Y")
+    places = Location.objects.all()
+    screens = Display.objects.all()
+    print places[0]
     context = { 'task_type' : task.type.id,
         'is_public' : task.public,
-        'description' : task.description }
+        'description' : task.description,
+        'start' : start,
+        'end' : end,
+        'places' : places,
+        'screens' : screens
+        }
     return render(request, 'schedule_task.html', context)
 
 

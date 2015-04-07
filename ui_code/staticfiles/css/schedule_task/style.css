@@ -2,13 +2,12 @@
     display: none;
 }
 
-.tab-content {
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 20px;
+.inline {
+    display: inline;
 }
 
-.nav-tabs {
-    margin-bottom: 0;
+#duration {
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
 }
