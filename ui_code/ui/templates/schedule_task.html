@@ -36,6 +36,7 @@
                     <div class="qq-progress-bar-selector qq-progress-bar progress-bar-success progress-bar-striped"></div>
                 </div>
                 <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
                 <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
                 <span class="qq-upload-file-selector qq-upload-file"></span>
                 <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
@@ -66,6 +67,11 @@ $(function() {
         request: {
             endpoint: '/upload'
         },
+        {% if not is_public %}
+        session : {
+            endpoint : 'session/',
+        },
+        {% endif %}
         chunking: {
             enabled: true,
         },
@@ -75,6 +81,12 @@ $(function() {
         },
         params: {
             'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        thumbnails: {
+            placeholders: {
+              waitingPath: "{% static 'js/jquery.fine-uploader/placeholders/waiting-generic.png' %}",
+              notAvailablePath: "{% static 'js/jquery.fine-uploader/placeholders/not_available-generic.png' %}"
+            }
         },
 
         // task-types:
@@ -190,9 +202,12 @@ $(function() {
                 options : {
                     time : time,
                     screens : screens,
-                    duration : duration
+                    duration : duration,
                 },
-                task_type : {{ task_type }}
+                task_type : {{ task_type }},
+                {% if not is_public %}
+                task_id : {{ task_id }}
+                {% endif %}
             };
 
             $.ajax({
@@ -235,25 +250,29 @@ $(function() {
         return '<select class="form-control" id=' + id + '><option value="0">12am</option>' + hours(1) + '<option value="12">12pm</option>' + hours(13) + '</select>';
     };
 
+    var addHoursInterface = function() {
+        $("#timeselect-container").append(getPicker("start-hour"));
+        $("#timeselect-container").append(getPicker("end-hour"));
+        $("#end-hour").append("<option value='24' selected>12am</option>");
+        $("#start-hour").on("change", function() {
+            var end = parseInt($("#end-hour").val()), start = parseInt($(this).val());
+            if ( end <= start) {
+                $("#end-hour").val(start+1);
+            }
+        });
+        $("#end-hour").on("change", function() {
+            var start = parseInt($("#start-hour").val()), end = parseInt($(this).val());
+            if ( end <= start) {
+                $("#start-hour").val(end-1);
+            }
+        })
+    }
+
     // display hours selecting interface
     $('#timeselect').on("change", function() {
         var val = $("#timeselect option:selected").val();
         if (val == "precise") {
-            $("#timeselect-container").append(getPicker("start-hour"));
-            $("#timeselect-container").append(getPicker("end-hour"));
-            $("#end-hour").append("<option value='24' selected>12am</option>");
-            $("#start-hour").on("change", function() {
-                var end = parseInt($("#end-hour").val()), start = parseInt($(this).val());
-                if ( end <= start) {
-                    $("#end-hour").val(start+1);
-                }
-            });
-            $("#end-hour").on("change", function() {
-                var start = parseInt($("#start-hour").val()), end = parseInt($(this).val());
-                if ( end <= start) {
-                    $("#start-hour").val(end-1);
-                }
-            })
+           addHoursInterface();
         } else {
             $("#start-hour").remove();
             $("#end-hour").remove();
@@ -279,6 +298,43 @@ $(function() {
             $('#duration').val(60);
         }
     });
+    {% endif %}
+
+
+
+
+    // Loads all the info into the page if modifying a task
+    {% if not is_public %}
+    var options = JSON.parse('{{ options|safe|lower }}');
+    console.log(options);
+
+    // set duration
+    $("#duration").val(options['duration']);
+
+    var time_ops = options['time'];
+
+    // set time
+    $('#timeselect').val(time_ops['type']);
+
+    if (time_ops['type'] == 'precise') {
+        addHoursInterface();
+        $("#start-hour").val(time_ops['start']);
+        $("#end-hour").val(time_ops['end']);
+    }
+
+    var screen_ops = options['screens'];
+
+    // set location
+    $('#placeselect').val(screen_ops['type']);
+
+    if (screen_ops['type'] == 'individual') {
+        var template = $('#screens-template').html();
+        $("#placeselect-container").append(template);
+        $("#screenselect").val(screen_ops['value'])
+    } else if (screen_ops['type'] == 'location') {
+        $("#placeselect option:contains("+screen_ops['value']+")").attr('selected','selected');
+    }
+
     {% endif %}
 
 });

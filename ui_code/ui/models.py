@@ -164,6 +164,7 @@ class Media(models.Model):
     # can be empty (for previews and other things)
     task = models.ForeignKey(Task)
     uuid = models.CharField(max_length=64)
+    name = models.CharField(max_length=255)
 
     class Meta:
         db_table = "displayer_media"
@@ -185,17 +186,26 @@ class Schedule(models.Model):
     @classmethod
     def get_list_of_schedules(self, user):
         # Returns basic info about schedules
-        all_schedules_for_user = self.objects.filter(user=user).order_by("-end")
+        all_schedules_for_user = self.objects.filter(user=user)
         schedules_info = []
         for schedule in all_schedules_for_user:
             displays = []
-            for display in Display.objects.filter(schedule=schedule):
-                displays.append(str(display))
+            disp_options = schedule.options["screens"]
+            if disp_options["type"] == "individual":
+                for display in Display.objects.filter(schedule=schedule):
+                    displays.append(str(display))
+                displays = "<br>".join(displays)
+            else:
+                if disp_options["type"] == "all":
+                    displas = "All available displays"
+                else:
+                    displays = "Displays in " + disp_options["value"]
             d = {
                 'id' : schedule.id,
                 'description' : schedule.task.description,
-                'displays' : "<br>".join(displays),
-                'task_type' : schedule.task.type.description
+                'displays' : displays,
+                'task_type' : schedule.task.type.description,
+                'task_id' : schedule.task.id
             }
             schedules_info.append(d)
         return schedules_info
@@ -232,12 +242,7 @@ class Schedule(models.Model):
                 else:
                     end = end.replace(hour = hour)
 
-                print end
-
                 ends_in = (datetime.now() - end).total_seconds()
-
-                print ends_in
-
 
                 list_of_schedules[schedule.id] = {
                     "time" : ends_in,

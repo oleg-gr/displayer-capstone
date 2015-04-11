@@ -10,7 +10,7 @@
                 </thead>
                 <tbody>
                     {% for schedule in schedules %}
-                        <tr data-id="{{ schedule.id }}" class='clickable-row' data-href='#'>
+                        <tr data-id="{{ schedule.id }}" class='clickable-row' data-href="{% url "schedule_task" schedule.task_id %}">
                             <td>{{ schedule.description }}</td>
                             <td>{{ schedule.task_type }}</td>
                             <td>{{ schedule.displays|safe }}</td>
