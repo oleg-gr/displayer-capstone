@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{% static 'css/schedule_task/style.css' %}">
 <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker3.min.css' %}">
+
 <!-- This is the markup for file uploader -->
 <script type="text/template" id="qq-template">
     <div class="qq-uploader-selector qq-uploader">
@@ -75,15 +76,28 @@ $(function() {
         params: {
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
+
+        // task-types:
+        // 1: display picture
+        // 2: play video
+        // 3: play sound
+        // 4: display slideshow
+
         // don't allow multiple files to be uploaded for certain tasks
-        {% if task_type == 1 %}
+        {% if task_type == 1 or task_type == 2 %}
         multiple: false,
+        {% elif task_type == 4 %}
+        multiple: true
         {% endif %}
+
+
         // task-specific options
-        {% if task_type == 1 %}
+        {% if task_type == 1 or task_type == 4 %}
+        // single image and slideshow
         validation: {
             acceptFiles: 'image/gif,image/jpeg,image/png',
             allowedExtensions: ['gif', 'jpeg', 'jpg', 'png'],
+            // 1MB should be enough
             sizeLimit: 1024000
         }
         {% endif %}
@@ -97,6 +111,7 @@ $(function() {
         }, 2000);
     };
 
+    // Submit button logic
     $('#schedule').on('click', function() {
         var files = $("#uploader").fineUploader('getUploads');
         {% if task_type == 1 %}
@@ -107,28 +122,58 @@ $(function() {
             if ($("#timeselect").val() == "precise") {
                 var start_h = parseInt($("#start-hour").val());
                 var end_h = parseInt($("#end-hour").val());
-                time = { start : start_h, end : end_h };
+                time = {
+                    type : "precise",
+                    start : start_h,
+                    end : end_h
+                };
                 if (isNaN(start_h) || isNaN(end_h) || start_h>=end_h || (start_h==0 && end_h==24)) {
                     raiseError("Invalid time range selected");
                     return;
                 }
             } else {
-                time = $("#timeselect").val();
-            }
-
-            if ($("#placeselect").val() == "individual") {
-                screens = $("#screenselect").val();
-                if (screens == null || screens.length == 0) {
-                    raiseError("Please select at least one screen");
-                    return;
+                time = {
+                    type : $("#timeselect").val(),
                 }
-            } else {
-                screens = $("#placeselect").val();
+
+                if (time['type'] == "day") {
+                    time['start'] = 0;
+                    time['end'] = 24;
+                } else if (time['type'] == "noon") {
+                    time['start'] = 12;
+                    time['end'] = 13;
+                } else if (time['type'] == "breakfast") {
+                    time['start'] = 8;
+                    time['end'] = 10;
+                } else if (time['type'] == "lunch") {
+                    time['start'] = 13;
+                    time['end'] = 15;
+                } else if (time['type'] == "dinner") {
+                    time['start'] = 18;
+                    time['end'] = 21;
+                }
+
             }
 
             if ($("#description").val().length == 0) {
                 raiseError("Please enter a description");
                 return;
+            }
+
+            if ($("#placeselect").val() == "individual") {
+                screens = {
+                    type : "individual",
+                    value : $("#screenselect").val()
+                }
+                if (screens['value'] == null || screens['value'].length == 0) {
+                    raiseError("Please select at least one screen");
+                    return;
+                }
+            } else {
+                screens = {
+                    type : "location",
+                    value : $("#placeselect").val()
+                }
             }
 
             // submit logic
@@ -149,8 +194,6 @@ $(function() {
                 },
                 task_type : {{ task_type }}
             };
-
-            console.log(data);
 
             $.ajax({
               type: "POST",
@@ -178,6 +221,7 @@ $(function() {
         autoclose: true
     });
 
+    // programatically create hour pickers
     var hours = function(offset) {
         var post = (offset == 1) ? "am" : "pm";
         var text;
@@ -191,6 +235,7 @@ $(function() {
         return '<select class="form-control" id=' + id + '><option value="0">12am</option>' + hours(1) + '<option value="12">12pm</option>' + hours(13) + '</select>';
     };
 
+    // display hours selecting interface
     $('#timeselect').on("change", function() {
         var val = $("#timeselect option:selected").val();
         if (val == "precise") {
@@ -215,6 +260,7 @@ $(function() {
         }
     });
 
+    // screen-selecting interface
     $('#placeselect').on("change", function() {
         var val = $("#placeselect option:selected").val();
         if (val == "individual") {
@@ -225,6 +271,7 @@ $(function() {
         }
     });
 
+    // duration custom for task types
     {% if task_type == 1 %}
     $('#duration').on("keyup", function() {
         var val = $('#duration').val();

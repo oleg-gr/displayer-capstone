@@ -114,7 +114,6 @@ def schedule(request):
     # try:
     if request.method == 'POST':
         data = json.loads(request.POST['json_data'])
-        print data
         files = data["files"]
         description = data["description"]
         dates = data["dates"]
@@ -136,18 +135,19 @@ def schedule(request):
 
         displays = []
         screens = options['screens']
-        if screens == 'all':
-            displays = Display.objects.all()
-        elif isinstance(screens, list):
-            for screen in screens:
-                displays.append(Display.objects.get(id=int(screen)))
+        if screens['type'] == 'individual':
+            for screen in screens['value']:
+                displays.append(Display.objects.get(user_id=int(screen)))
         else:
-            displays = Display.objects.filter(location=Location.objects.get(id=int(screens)))
-            if not displays:
-                return HttpResponseBadRequest('No displays at selected location')
+            if screens['value'] == 'all':
+                displays = Display.objects.all()
+            else:
+                location=Location.objects.get(id=int(screens['value']))
+                displays = Display.objects.filter(location=location)
+                options['screens']['value'] = location.name
+                if not displays:
+                    return HttpResponseBadRequest('No displays at selected location')
 
-        print dates['start']
-        print datetime.strptime(dates['start'], "%d/%m/%Y")
 
         schedule = Schedule(user_id=request.user.id,
             task=task,
@@ -174,10 +174,10 @@ def schedule_task(request, id):
         task = Task.objects.get(id=id)
     except Task.DoesNotExist:
         return render(request, 'schedule_task.html',
-            { 'error' : "Requested task does not exist." })
+            { 'error' : "Requested task does not exist." } )
     if not task.public and task.user != request.user:
         return render(request, 'schedule_task.html',
-            { 'error' : "You cannot edit requested task." })
+            { 'error' : "You cannot edit requested task." } )
     if task.public:
         start = datetime.now().strftime("%d/%m/%Y")
         end = (datetime.now() + timedelta(days=1)).strftime("%d/%m/%Y")
@@ -212,6 +212,5 @@ def displays_login_info(request):
 def schedules_active_info(request):
     # Lists whether displays are logged in or not
     schedules_active_info = Schedule.get_schedules_active_info(request.user)
-    print schedules_active_info
     data = json.dumps(schedules_active_info)
     return HttpResponse(data, content_type='application/json')

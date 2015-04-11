@@ -2,9 +2,8 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import timedelta
 import collections
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from jsonfield import JSONField
 
 class Capability(models.Model):
@@ -207,9 +206,45 @@ class Schedule(models.Model):
         all_schedules_for_user = self.objects.filter(user=user)
         list_of_schedules = {}
         for schedule in all_schedules_for_user:
+            start = schedule.start
+            start = datetime.combine(start, datetime.min.time())
+
             options = schedule.options
-            list_of_schedules[schedule.id] = { "end": schedule.end.strftime("%d/%m/%Y"),
-                "option":options["time"]}
+
+            start = start.replace(hour = options['time']['start'])
+
+            starts_in = (datetime.now() - start).total_seconds()
+
+            if starts_in < 0:
+                active = False
+                list_of_schedules[schedule.id] = {
+                    "time" : -starts_in,
+                    "active" : active
+                }
+            else:
+                active = True
+                end = schedule.end
+                end = datetime.combine(end, datetime.min.time())
+                hour = options['time']['end']
+                if hour == 24:
+                    if options['time']['type'] != 'day':
+                        end += timedelta(days = 1)
+                else:
+                    end = end.replace(hour = hour)
+
+                print end
+
+                ends_in = (datetime.now() - end).total_seconds()
+
+                print ends_in
+
+
+                list_of_schedules[schedule.id] = {
+                    "time" : ends_in,
+                    "active" : active
+                }
+
+
         return list_of_schedules
 
     def displays_list(self):
