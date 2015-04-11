@@ -184,6 +184,13 @@ def schedule(request):
 
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
+def delete_task(request, id):
+    Task.objects.get(id=id).delete()
+    return redirect('ui.views.manage')
+
+
+@login_required
+@user_passes_test(is_not_display_check, redirect_field_name='/display')
 def schedule_task(request, id):
     try:
         task = Task.objects.get(id=id)

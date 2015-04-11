@@ -196,8 +196,8 @@ class Schedule(models.Model):
                     displays.append(str(display))
                 displays = "<br>".join(displays)
             else:
-                if disp_options["type"] == "all":
-                    displas = "All available displays"
+                if disp_options["value"] == "all":
+                    displays = "All available displays"
                 else:
                     displays = "Displays in " + disp_options["value"]
             d = {

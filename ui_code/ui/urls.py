@@ -23,5 +23,6 @@ urlpatterns = patterns('',
     url(r'^tasks/(?P<id>\d+)/info', views.schedule_task, name="info_task"),
     url(r'^tasks/(?P<id>\d+)/schedule', views.schedule_task, name="schedule_task"),
     url(r'^tasks/(?P<id>\d+)/session', views.schedule_task_session, name="schedule_task_session"),
+    url(r'^tasks/(?P<id>\d+)/delete', views.delete_task, name="delete_task"),
     url(r'^schedule$', views.schedule, name='schedule'),
 )
