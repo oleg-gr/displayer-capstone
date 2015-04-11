@@ -53,8 +53,7 @@ def is_display_check(user):
 @login_required
 @user_passes_test(is_display_check, redirect_field_name='/manage')
 def display(request):
-    display = Display.get_for_display(request.user)
-    context = {'display':display}
+    context = {}
     return render(request, 'display.html', context)
 
 
@@ -67,6 +66,14 @@ def display_heartbeat(request):
     display.last_active = datetime.now()
     display.save()
     return HttpResponse('')
+
+
+@login_required
+@user_passes_test(is_display_check, redirect_field_name='/manage')
+def display_data(request):
+    display = Display.get_data_for_display(request.user)
+    data = json.dumps(display)
+    return HttpResponse(data, content_type='application/json')
 
 
 
@@ -135,7 +142,7 @@ def schedule(request):
             for screen in screens:
                 displays.append(Display.objects.get(id=int(screen)))
         else:
-            displays = Display.object.filter(location=Location.objects.get(id=int(screens)))
+            displays = Display.objects.filter(location=Location.objects.get(id=int(screens)))
             if not displays:
                 return HttpResponseBadRequest('No displays at selected location')
 
@@ -158,7 +165,7 @@ def schedule(request):
     # except:
     #     return HttpResponseBadRequest('Something went wrong, please contact administrator')
 
-    return HttpResponse(data)
+    return HttpResponse(200, "OK")
 
 @login_required
 @user_passes_test(is_not_display_check, redirect_field_name='/display')
@@ -205,5 +212,6 @@ def displays_login_info(request):
 def schedules_active_info(request):
     # Lists whether displays are logged in or not
     schedules_active_info = Schedule.get_schedules_active_info(request.user)
+    print schedules_active_info
     data = json.dumps(schedules_active_info)
     return HttpResponse(data, content_type='application/json')

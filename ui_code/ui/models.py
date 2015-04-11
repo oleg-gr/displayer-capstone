@@ -50,6 +50,28 @@ class Display(models.Model):
     capabilities = models.ManyToManyField(Capability)
     last_active = models.DateTimeField(default=datetime.now())
 
+    @classmethod
+    def get_data_for_display(self, display):
+        to_display = Schedule.objects.filter(displays=display,
+                start__lte=datetime.now(), end__gte=datetime.now())
+        data = { 'tasks' : [] }
+
+        for schedule in to_display:
+            task = schedule.task
+            type = task.type.id
+            media = [x.media.url for x in Media.objects.filter(task=task)]
+            options = schedule.options
+
+            data['tasks'].append({
+                'type': type,
+                'media': media,
+                'options': options
+                })
+
+        print data
+
+        return data
+
     # TO-DO: rewrite this
     @classmethod
     def get_for_display(self, display):
@@ -167,10 +189,13 @@ class Schedule(models.Model):
         all_schedules_for_user = self.objects.filter(user=user).order_by("-end")
         schedules_info = []
         for schedule in all_schedules_for_user:
+            displays = []
+            for display in Display.objects.filter(schedule=schedule):
+                displays.append(str(display))
             d = {
                 'id' : schedule.id,
                 'description' : schedule.task.description,
-                'displays' : "<br>".join([]),
+                'displays' : "<br>".join(displays),
                 'task_type' : schedule.task.type.description
             }
             schedules_info.append(d)
@@ -181,10 +206,10 @@ class Schedule(models.Model):
         # Lists id's of displays and seconds since last active
         all_schedules_for_user = self.objects.filter(user=user)
         list_of_schedules = {}
-        now = datetime.now()
         for schedule in all_schedules_for_user:
-            ends_at = schedule.end
-            list_of_schedules[schedule.id] = (now - ends_at).total_seconds()
+            options = schedule.options
+            list_of_schedules[schedule.id] = { "end": schedule.end.strftime("%d/%m/%Y"),
+                "option":options["time"]}
         return list_of_schedules
 
     def displays_list(self):

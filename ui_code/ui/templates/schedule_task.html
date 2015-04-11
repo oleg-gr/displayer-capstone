@@ -83,8 +83,8 @@ $(function() {
         {% if task_type == 1 %}
         validation: {
             acceptFiles: 'image/gif,image/jpeg,image/png',
-            allowedExtensions: ['gif', 'jpeg', 'png'],
-            sizeLimit: 512000
+            allowedExtensions: ['gif', 'jpeg', 'jpg', 'png'],
+            sizeLimit: 1024000
         }
         {% endif %}
     });
@@ -159,7 +159,11 @@ $(function() {
                 csrfmiddlewaretoken : '{{ csrf_token }}'
                 },
               dataType: "json",
-              traditional: true
+              traditional: true,
+              success: function() {
+                // redirect to task info page
+                window.location.replace("/manage");
+              }
             });
 
         } else {
@@ -255,7 +259,7 @@ $(function() {
             <div class="col-md-12">
                 <h4>Upload required media<br /><small>Upload files required for your task</small></h4>
                 {% if task_type == 1 %}
-                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 512KB</strong> in size are allowed.</div>
+                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 1MB</strong> in size are allowed.</div>
                 <div id="uploader" class="top-mrg-20"></div>
                 {% elif task_type == 2 %} video, etc. {% else %}
                 <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Success:</span>&nbsp;&nbsp;The files were uploaded during the previous step.</div>

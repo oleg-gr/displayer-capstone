@@ -7,20 +7,20 @@ Display | Displayer
 {% block depends %}
     {% load static %}
     <script src="{% static 'js/display/heartbeat.js' %}"></script>
+    <script src="{% static 'js/display/script.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/display/style.css' %}">
 {% endblock %}
 
 {% block navbar %} {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Running display logic...</h3>
-        </div>
-    </div>
-{#     {% for display in display %}
-    Task {{forloop.counter}}:<br>
-        {% for media in display.task.media %}
-            <img src="/media/{{media.media}}"><br>
-        {% endfor %}
-    {% endfor %} #}
+<div id="carousel" class="carousel slide">
+  <!-- Wrapper for slides -->
+  <div class='carousel-inner' role='listbox'>
+  </div>
+</div>
+
+<div id="no-data" class="text-center">
+<h1><span class="white-text">No data to display<span><br /><small>Please schedule some tasks</small></h1>
+</div>
 {% endblock %}

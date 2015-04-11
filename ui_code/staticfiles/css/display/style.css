@@ -1,0 +1,36 @@
+#carousel {
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+body {
+    background-color: black;
+}
+
+#no-data {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.white-text {
+    color: white;
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
+}

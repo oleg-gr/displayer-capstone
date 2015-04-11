@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^display$', views.display, name='display'),
     # display API
     url(r'^display_heartbeat$', views.display_heartbeat, name='display_heartbeat'),
+    url(r'^display_data$', views.display_data, name='display_data'),
 
     # user URL
     url(r'^manage$', views.manage, name='manage'),
