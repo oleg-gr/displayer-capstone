@@ -193,10 +193,6 @@ $(function() {
                     type : "individual",
                     value : $("#screenselect").val()
                 }
-                if (screens['value'] == null || screens['value'].length == 0) {
-                    raiseError("Please select at least one screen");
-                    return;
-                }
             } else {
                 screens = {
                     type : "location",
@@ -204,9 +200,15 @@ $(function() {
                 }
             }
 
+            if (screens['value'] == null || screens['value'].length == 0) {
+                console.log('sup');
+                raiseError("Please select at least one screen");
+                return;
+            }
+
             // submit logic
 
-            {% if task_type == 1 %}
+            {% if task_type == 1 or task_type == 4 %}
 
             duration = $("#duration").val();
 
@@ -347,9 +349,8 @@ $(function() {
     }
 
     var screen_ops = options['screens'];
-
     // set location
-    $('#placeselect').val(screen_ops['type']);
+    // $('#placeselect').val(screen_ops['type']);
 
     if (screen_ops['type'] == 'individual') {
         var template = $('#screens-template').html();
