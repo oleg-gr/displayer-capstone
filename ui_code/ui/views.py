@@ -114,7 +114,7 @@ def schedule(request):
     # try:
     if request.method == 'POST':
         data = json.loads(request.POST['json_data'])
-        files = data["files"]
+        files = data.get("files", [])
         description = data["description"]
         dates = data["dates"]
         options = data["options"]
