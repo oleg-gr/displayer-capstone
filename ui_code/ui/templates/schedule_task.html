@@ -24,7 +24,7 @@
             <span>Drop files here to upload</span>
         </div>
         <div class="qq-upload-button-selector btn btn-success">
-            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>&nbsp;&nbsp;Upload a file
+            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>&nbsp;&nbsp;Upload
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
             <span>Processing dropped files...</span>
@@ -99,7 +99,7 @@ $(function() {
         {% if task_type == 1 or task_type == 2 %}
         multiple: false,
         {% elif task_type == 4 %}
-        multiple: true
+        multiple: true,
         {% endif %}
 
 
@@ -139,10 +139,12 @@ $(function() {
 
     // Submit button logic
     $('#schedule').on('click', function() {
-        var files = $("#uploader").fineUploader('getUploads');
+        var files = $("#uploader").fineUploader('getUploads', 'upload successful');
         {% if task_type == 1 or task_type == 2 %}
         files = [files[files.length - 1]];
         if (files[0] && files[0].status == 'upload successful') {
+        {% else %}
+        if (files.length > 0) {
         {% endif %}
             var time, screens, duration;
             if ($("#timeselect").val() == "precise") {
@@ -247,7 +249,7 @@ $(function() {
             });
 
         } else {
-            raiseError("No files uploaded");
+            raiseError("Please, upload files");
         }
     });
 
@@ -389,6 +391,9 @@ $(function() {
                 {% elif task_type == 2 %}
                 <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that due to HTML5 restrictions only <strong>.mp4</strong>, <strong>.webm</strong> and <strong>.ogg</strong> files <strong>less than 500MB</strong> in size are allowed.</div>
                 <div id="uploader" class="top-mrg-20"></div>
+                {% elif task_type == 4 %}
+                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 2MB</strong> in size are allowed.</div>
+                <div id="uploader" class="top-mrg-20"></div>
                 {% else %}
                 <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Success:</span>&nbsp;&nbsp;The files were uploaded during the previous step.</div>
                 {% endif %}
@@ -466,6 +471,18 @@ $(function() {
                     </div>
                     <div class="form-group">
                         <p class="inline">seconds at a time.</p>
+                    </div>
+                </form>
+                {% elif task_type == 4 %}
+                <form class="form-inline">
+                    <div class="form-group">
+                        <p class="inline">for</p>
+                    </div>
+                    <div class="form-group lft-mrg-10 rgt-mrg-10">
+                        <input class="form-control input-sm text-right inline" type="text" value="5" maxlength="2" id="duration" data-toggle="tooltip" data-placement="top" title="60 seconds max">
+                    </div>
+                    <div class="form-group">
+                        <p class="inline">seconds for each picture.</p>
                     </div>
                 </form>
                 {% endif %}
