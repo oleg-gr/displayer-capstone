@@ -53,21 +53,25 @@ class Display(models.Model):
     def get_data_for_display(self, display):
         to_display = Schedule.objects.filter(displays=display,
                 start__lte=datetime.now(), end__gte=datetime.now())
-        data = { 'tasks' : [] }
+        data = { 'tasks' : [] , 'id' : display.id}
 
         for schedule in to_display:
             task = schedule.task
             type = task.type.id
             media = [x.media.url for x in Media.objects.filter(task=task)]
             options = schedule.options
-
+            if type == 5:
+                data['tasks'] =   [{
+                'type': type,
+                'media': media,
+                'options': options
+                }]
+                return data
             data['tasks'].append({
                 'type': type,
                 'media': media,
                 'options': options
                 })
-
-        print data
 
         return data
 

@@ -72,10 +72,9 @@ def display_heartbeat(request):
 @user_passes_test(is_display_check, redirect_field_name='/manage')
 def display_data(request):
     display = Display.get_data_for_display(request.user)
+    print display
     data = json.dumps(display)
     return HttpResponse(data, content_type='application/json')
-
-
 
 
 # User logic

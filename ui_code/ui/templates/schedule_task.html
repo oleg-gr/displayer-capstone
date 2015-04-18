@@ -229,11 +229,11 @@ $(function() {
 
             // submit logic
 
-            {% if task_type == 1 or task_type == 4 or task_type == 5 %}
+            {% if task_type == 1 or task_type == 4 %}
 
             duration = $("#duration").val();
 
-            {% elif task_type == 2 %}
+            {% elif task_type == 2 or task_type == 5 %}
 
             duration = "max";
 
@@ -353,13 +353,6 @@ $(function() {
         var val = $('#duration').val();
         if (val != '' && ( isNaN(val) || parseInt(val) > 60 )) {
             $('#duration').val(60);
-        }
-    });
-    {% elif task_type == 5 %}
-    $('#duration').on("keyup", function() {
-        var val = $('#duration').val();
-        if (val != '' && ( isNaN(val) || parseInt(val) > 60*10 )) {
-            $('#duration').val(60*10);
         }
     });
     {% endif %}
@@ -524,18 +517,6 @@ $(function() {
                     </div>
                     <div class="form-group">
                         <p class="inline">seconds for each picture.</p>
-                    </div>
-                </form>
-                {% elif task_type == 5 %}
-                <form class="form-inline">
-                    <div class="form-group">
-                        <p class="inline">for</p>
-                    </div>
-                    <div class="form-group lft-mrg-10 rgt-mrg-10">
-                        <input class="form-control input-sm text-right inline" type="text" value="60" maxlength="4" id="duration" data-toggle="tooltip" data-placement="top" title="600 seconds (10 min) max">
-                    </div>
-                    <div class="form-group">
-                        <p class="inline">seconds a a time.</p>
                     </div>
                 </form>
                 {% endif %}
