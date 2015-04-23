@@ -127,8 +127,6 @@ $(function(){ //DOM Ready
                 interval:false
             });
 
-            if (tasks)
-
             $('#carousel').on('slid.bs.carousel', function () {
                 var type = $('div.item.active').data("type");
                 if (type == 2) {
@@ -155,6 +153,8 @@ $(function(){ //DOM Ready
                     $(video).attr("loop", "loop");
                     video.get(0).play();
                 }
+            } else {
+                $('.carousel').carousel("next");
             }
         }
     });
