@@ -51,7 +51,7 @@ class Display(models.Model):
 
     @classmethod
     def get_data_for_display(self, display):
-        to_display = Schedule.objects.filter(displays=display,
+        to_display = Schedule.objects.filter(displays=display.display,
                 start__lte=datetime.now(), end__gte=datetime.now())
         data = { 'tasks' : [] , 'id' : display.id}
 

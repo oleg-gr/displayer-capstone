@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from ui.models import Capability
 
 class CapabilityAdmin(admin.ModelAdmin):
