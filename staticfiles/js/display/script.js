@@ -146,7 +146,7 @@ $(function(){ //DOM Ready
 
             updatePhotoHeight();
 
-            if (data["tasks"].length == 1) {
+            if ($('.carousel-inner .item').length == 1) {
                 var type = data["tasks"][0]["type"];
                 if (type == 2) {
                     var video = $('div.item.active video');
