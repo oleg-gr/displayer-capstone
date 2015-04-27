@@ -53,13 +53,28 @@ class Display(models.Model):
     def get_data_for_display(self, display):
         to_display = Schedule.objects.filter(displays=display.display,
                 start__lte=datetime.now(), end__gte=datetime.now())
+
         data = { 'tasks' : [] , 'id' : display.id}
 
         for schedule in to_display:
+            options = schedule.options
+            start = datetime.combine(schedule.start, datetime.min.time())
+            start = start.replace(hour = options['time']['start'])
+            end = schedule.end
+            end = datetime.combine(end, datetime.min.time())
+            hour = options['time']['end']
+            if hour == 24:
+                if options['time']['type'] != 'day':
+                    end += timedelta(days = 1)
+            else:
+                end = end.replace(hour = hour)
+            now = datetime.now()
+            if start > now or end < now:
+                continue
+
             task = schedule.task
             type = task.type.id
             media = [x.media.url for x in Media.objects.filter(task=task)]
-            options = schedule.options
             if type == 5:
                 data['tasks'] =   [{
                 'type': type,

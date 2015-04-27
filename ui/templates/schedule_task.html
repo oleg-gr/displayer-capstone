@@ -15,7 +15,7 @@
 <script type="text/template" id="qq-template">
     <div class="qq-uploader-selector qq-uploader">
         <!-- disable global progress bar for single-file uploads -->
-        {% if task_type != 1 %}
+        {% if task_type != 1 and task_type != 2 %}
         <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container progress">
             <div class="qq-total-progress-bar-selector qq-progress-bar progress-bar-success progress-bar-striped"></div>
         </div>
@@ -146,12 +146,12 @@ $(function() {
 
     // Submit button logic
     $('#schedule').on('click', function() {
-        var files = $("#uploader").fineUploader('getUploads', 'upload successful');
+        var files = $("#uploader").fineUploader('getUploads', { status: qq.status.UPLOAD_SUCCESSFUL });
         {% if task_type == 1 or task_type == 2 %}
         files = [files[files.length - 1]];
         if (files[0] && files[0].status == 'upload successful') {
         {% elif task_type == 5 %}
-        if (true) {//so we don't have to write an if on the closing bracket
+        { //so we don't have to write an if on the closing bracket
         {% else %}
         if (files.length > 0) {
         {% endif %}
@@ -419,13 +419,13 @@ $(function() {
             <div class="col-md-12">
                 <h4>Upload required media<br /><small>Upload files required for your task</small></h4>
                 {% if task_type == 1 %}
-                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 2MB</strong> in size are allowed.</div>
+                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please note that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 2MB</strong> in size are allowed.</div>
                 <div id="uploader" class="top-mrg-20"></div>
                 {% elif task_type == 2 %}
-                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that due to HTML5 restrictions only <strong>.mp4</strong>, <strong>.webm</strong> and <strong>.ogg</strong> files <strong>less than 500MB</strong> in size are allowed.</div>
+                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please note that due to HTML5 restrictions only <strong>.mp4</strong>, <strong>.webm</strong> and <strong>.ogg</strong> files <strong>less than 500MB</strong> in size are allowed.</div>
                 <div id="uploader" class="top-mrg-20"></div>
                 {% elif task_type == 4 %}
-                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please notice that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 2MB</strong> in size are allowed.</div>
+                <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Warning:</span>&nbsp;&nbsp;Please note that only <strong>.jpg</strong>, <strong>.png</strong> and <strong>.gif</strong> files <strong>less than 2MB</strong> in size are allowed.</div>
                 <div id="uploader" class="top-mrg-20"></div>
                 {% else %}
                 <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="sr-only">Success:</span>&nbsp;&nbsp;The files were uploaded during the previous step.</div>
