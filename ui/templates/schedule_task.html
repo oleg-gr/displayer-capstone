@@ -151,7 +151,7 @@ $(function() {
         files = [files[files.length - 1]];
         if (files[0] && files[0].status == 'upload successful') {
         {% elif task_type == 5 %}
-        { //so we don't have to write an if on the closing bracket
+        if (true) { //so we don't have to write an if on the closing bracket
         {% else %}
         if (files.length > 0) {
         {% endif %}

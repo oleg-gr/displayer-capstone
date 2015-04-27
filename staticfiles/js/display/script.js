@@ -30,12 +30,21 @@ $(function(){ //DOM Ready
           { url: 'stun:stun.l.google.com:19302' } // Pass in optional STUN and TURN server for maximum network compatibility
         ]}});
 
+        function tryCalling() {
+            console.log(window.existingCall);
+            if (!window.existingCall || !window.existingCall.open) {
+                console.log("trynna call");
+                var call = peer.call(id_to_call, window.localStream);
+                step3(call);
+            }
+            setTimeout(tryCalling, 1000);
+        }
+
         peer.on("open", function (id) {
             console.log("Opened peer with id " + id);
             if (my_id == value["options"]["screens"]["value"][1]) {
                 console.log("Trying to call");
-                var call = peer.call(id_to_call, window.localStream);
-                step3(call);
+                tryCalling();
             }
         });
 
@@ -49,20 +58,6 @@ $(function(){ //DOM Ready
             call.answer(window.localStream);
             step3(call);
         });
-
-        function step3 (call) {
-          // Hang up on an existing call if present
-          if (window.existingCall) {
-            window.existingCall.close();
-          }
-
-          // Wait for stream on the call, then set peer video display
-          call.on('stream', function(stream){
-            $('#their-video').prop('src', URL.createObjectURL(stream));
-          });
-
-          window.existingCall = call;
-        }
 
     }
 
@@ -78,16 +73,32 @@ $(function(){ //DOM Ready
 
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-        step1();
+        step1(value, my_id, id_to_call);
 
-        function step1 () {
+    }
+
+    var step1 = function (value, my_id, id_to_call) {
           // Get audio/video stream
           navigator.getUserMedia({audio: true, video: true}, function(stream){
             window.localStream = stream;
+
             start_call(value, my_id, id_to_call);
+
           }, function(){ console.log("error setting up stream") });
         }
 
+    var step3 = function (call) {
+      // Hang up on an existing call if present
+      if (window.existingCall) {
+        window.existingCall.close();
+      }
+
+      // Wait for stream on the call, then set peer video display
+      call.on('stream', function(stream){
+        $('#their-video').prop('src', URL.createObjectURL(stream));
+      });
+
+      window.existingCall = call;
     }
 
     var getInterval = function(elem) {

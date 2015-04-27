@@ -28,6 +28,9 @@ video, img {
     margin:auto;
 }
 
+#no-data {
+    display: none;
+}
 
 /*.carousel-inner > .item > img {*/
     /*margin: 0 auto;*/
