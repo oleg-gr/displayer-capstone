@@ -48,6 +48,16 @@ $(function(){ //DOM Ready
             }
         });
 
+        peer.on("disconnect", function () {
+            function tryReconnecting() {
+                if (peer.disconnected) {
+                    peer.reconnect();
+                    setTimeout(tryReconnecting, 2000);
+                }
+            }
+            tryReconnecting();
+        });
+
         peer.on("error", function (err) {
             console.log(err);
         });
