@@ -139,7 +139,7 @@ $(function(){ //DOM Ready
                 // Video
                     makeVideo(value['id'], value['media'][0], type);
                 } else if (type == 5) {
-                    makePortal(value['id'], value, data["id"]);
+                    makePortal(value, data["id"]);
                     return;
                 }
             });
