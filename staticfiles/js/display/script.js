@@ -1,6 +1,23 @@
 $(function(){ //DOM Ready
 
+
+    var interval = 15000;
+
+    function doHeartbeat() {
+        $.ajax({
+                type: 'GET',
+                url: '/display_heartbeat',
+                complete: function (data) {
+                        // Schedule the next
+                        setTimeout(doHeartbeat, interval);
+                }
+        });
+    }
+
     var old_data;
+
+    doHeartbeat();
+
 
     $(window).bind('resize', function () {
         updatePhotoHeight();
