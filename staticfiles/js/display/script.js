@@ -1,5 +1,7 @@
 $(function(){ //DOM Ready
 
+    var old_data;
+
     $(window).bind('resize', function () {
         updatePhotoHeight();
     });
@@ -7,20 +9,20 @@ $(function(){ //DOM Ready
     var updatePhotoHeight = function() {
         var height = $(window).height();
         $.each($("#carousel .carousel-inner div :first-child"), function (index, value) {
-           $(this).css('height', height);
+            $(this).css('height', height);
         });
     }
 
-    var makeVideo = function(url, type) {
+    var makeVideo = function(task_id, url, type) {
         var format = url.substr(url.lastIndexOf('.') + 1);
         var element = "<video "+ url + "><source src='"+url+"' type='video/"+format+"'>Your browser does not support the video tag.</video>"
-        element = "<div class='item' data-type="+ type + ">" + element + '</div>';
+        element = "<div class='item' data-type="+ type + " id=" + task_id + ">" + element + '</div>';
         $("#carousel .carousel-inner").append(element);
     }
 
-    var makePicture = function(url, type, duration) {
+    var makePicture = function(task_id, url, type, duration) {
         element = "<img src=" + url + ">"
-        element = "<div class='item' data-type="+ type + " data-duration='" + duration*1000 + "'>" + element + '</div>';
+        element = "<div class='item' data-type="+ type + " data-duration='" + duration*1000 + "' id=" + task_id + ">" + element + '</div>';
         $("#carousel .carousel-inner").append(element);
     }
 
@@ -115,7 +117,7 @@ $(function(){ //DOM Ready
         return $('div.item.active').data("duration");
     }
 
-    $.getJSON( '/display_data', function (data) {
+    var processData = function(data) {
         if (data["tasks"].length == 0) {
             $("#no-data").show();
         } else {
@@ -127,17 +129,17 @@ $(function(){ //DOM Ready
                 duration = parseInt(value['options']['duration']);
                 if (type == 1) {
                 // Picture
-                    makePicture(value['media'][0], type, duration);
+                    makePicture(value['id'], value['media'][0], type, duration);
                 } else if (type == 4) {
                 // Slideshow
                     for (var i = 0; i < value['media'].length; i++) {
-                        makePicture(value['media'][i], type, duration);
+                        makePicture(value['id'], value['media'][i], type, duration);
                     }
                 } else if (type == 2) {
                 // Video
-                    makeVideo(value['media'][0], type);
+                    makeVideo(value['id'], value['media'][0], type);
                 } else if (type == 5) {
-                    makePortal(value, data["id"]);
+                    makePortal(value['id'], value, data["id"]);
                     return;
                 }
             });
@@ -175,8 +177,51 @@ $(function(){ //DOM Ready
                     video.get(0).play();
                 }
             } else {
-                $('.carousel').carousel("next");
+                setTimeout(function() {
+                    $('.carousel').carousel('next');
+                }, getInterval());
             }
         }
+    }
+
+    $.getJSON( '/display_data', function (data) {
+        processData(data);
+        old_data = data;
+        setTimeout(function() {
+            updateJson();
+        }, 3000);
     });
+
+    function arr_diff(a1, a2)
+    {
+      var a=[], diff=[];
+      for(var i=0;i<a1.length;i++)
+        a[a1[i]]=true;
+      for(var i=0;i<a2.length;i++)
+        if(a[a2[i]]) delete a[a2[i]];
+        else a[a2[i]]=true;
+      for(var k in a)
+        diff.push(k);
+      return diff;
+    }
+
+    var updateJson = function() {
+        $.getJSON( '/display_data', function (data) {
+            console.log("updating_  json");
+            console.log(data);
+            console.log(old_data);
+            console.log("1111");
+            if (data["tasks"].toString() != old_data["tasks"].toString()) {
+                console.log("if triggered");
+                $('.carousel-inner .item').remove();
+                $('#carousel').on('slid.bs.carousel', function () {
+                    return;
+                });
+                processData(data);
+            }
+            // processData(data);
+            old_data = data;
+            setTimeout(updateJson, 3000);
+        });
+    }
 });

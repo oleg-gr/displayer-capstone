@@ -64,11 +64,12 @@ class Display(models.Model):
             end = datetime.combine(end, datetime.min.time())
             hour = options['time']['end']
             if hour == 24:
-                if options['time']['type'] != 'day':
-                    end += timedelta(days = 1)
+                end += timedelta(days = 1)
             else:
                 end = end.replace(hour = hour)
             now = datetime.now()
+            print start
+            print end
             if start > now or end < now:
                 continue
 
@@ -79,13 +80,15 @@ class Display(models.Model):
                 data['tasks'] =   [{
                 'type': type,
                 'media': media,
-                'options': options
+                'options': options,
+                'id': task.id
                 }]
                 return data
             data['tasks'].append({
                 'type': type,
                 'media': media,
-                'options': options
+                'options': options,
+                'id': task.id
                 })
 
         return data
@@ -256,8 +259,7 @@ class Schedule(models.Model):
                 end = datetime.combine(end, datetime.min.time())
                 hour = options['time']['end']
                 if hour == 24:
-                    if options['time']['type'] != 'day':
-                        end += timedelta(days = 1)
+                    end += timedelta(days = 1)
                 else:
                     end = end.replace(hour = hour)
 
