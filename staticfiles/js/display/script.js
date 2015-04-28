@@ -157,11 +157,13 @@ $(function(){ //DOM Ready
                     var video = $('div.item.active video');
                     video.get(0).play();
                     video.get(0).onended = function (e) {
+                        console.log("video next");
                         $('.carousel').carousel('next');
                     }
                 } else {
                     console.log("pictures");
                     setTimeout(function() {
+                        console.log("pic next");
                         $('.carousel').carousel('next');
                     }, getInterval());
                 }
@@ -214,9 +216,12 @@ $(function(){ //DOM Ready
             if (data["tasks"].toString() != old_data["tasks"].toString()) {
                 console.log("if triggered");
                 $('.carousel-inner .item').remove();
-                $('#carousel').on('slid.bs.carousel', function () {
-                    return;
-                });
+                $('#carousel').off('slid.bs.carousel');
+                var id = window.setTimeout(function() {}, 0);
+
+                while (id--) {
+                    window.clearTimeout(id); // will do nothing if no timeout with id is present
+                }
                 processData(data);
             }
             // processData(data);
