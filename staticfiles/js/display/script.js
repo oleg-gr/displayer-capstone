@@ -222,6 +222,7 @@ $(function(){ //DOM Ready
                 while (id--) {
                     window.clearTimeout(id); // will do nothing if no timeout with id is present
                 }
+                doHeartbeat();
                 processData(data);
             }
             // processData(data);
