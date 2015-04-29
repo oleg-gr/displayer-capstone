@@ -50,9 +50,8 @@ $(function(){ //DOM Ready
         ]}});
 
         function tryCalling() {
-            console.log(window.existingCall);
             if (!window.existingCall || !window.existingCall.open) {
-                console.log("trynna call");
+                console.log("trying to call");
                 var call = peer.call(id_to_call, window.localStream);
                 step3(call);
             }
@@ -62,7 +61,6 @@ $(function(){ //DOM Ready
         peer.on("open", function (id) {
             console.log("Opened peer with id " + id);
             if (my_id == value["options"]["screens"]["value"][1]) {
-                console.log("Trying to call");
                 tryCalling();
             }
         });
@@ -170,7 +168,6 @@ $(function(){ //DOM Ready
             $('#carousel').on('slid.bs.carousel', function () {
                 var type = $('div.item.active').data("type");
                 if (type == 2) {
-                    console.log("video");
                     var video = $('div.item.active video');
                     video.get(0).play();
                     video.get(0).onended = function (e) {
@@ -178,7 +175,6 @@ $(function(){ //DOM Ready
                         $('.carousel').carousel('next');
                     }
                 } else {
-                    console.log("pictures");
                     setTimeout(function() {
                         console.log("pic next");
                         $('.carousel').carousel('next');
@@ -226,12 +222,8 @@ $(function(){ //DOM Ready
 
     var updateJson = function() {
         $.getJSON( '/display_data', function (data) {
-            console.log("updating_  json");
-            console.log(data);
-            console.log(old_data);
-            console.log("1111");
-            if (data["tasks"].toString() != old_data["tasks"].toString()) {
-                console.log("if triggered");
+            if (JSON.stringify(data["tasks"]) != JSON.stringify(old_data["tasks"])) {
+                console.log(data);
                 $('.carousel-inner .item').remove();
                 $('#carousel').off('slid.bs.carousel');
                 var id = window.setTimeout(function() {}, 0);
