@@ -1,0 +1,220 @@
+[
+{
+    "fields": {
+        "description": "Display picture"
+    },
+    "model": "ui.capability",
+    "pk": 1
+},
+{
+    "fields": {
+        "description": "Play video"
+    },
+    "model": "ui.capability",
+    "pk": 2
+},
+{
+    "fields": {
+        "description": "Play sound"
+    },
+    "model": "ui.capability",
+    "pk": 3
+},
+{
+    "fields": {
+        "description": "Display Slideshow"
+    },
+    "model": "ui.capability",
+    "pk": 4
+},
+{
+    "fields": {
+        "description": "Video portal"
+    },
+    "model": "ui.capability",
+    "pk": 5
+},
+{
+    "fields": {
+        "capabilities": [
+            2,
+            3,
+            1,
+            4,
+            5
+        ],
+        "location": 2,
+        "last_active": "2015-04-22T14:28:28.744"
+    },
+    "model": "ui.display",
+    "pk": 2
+},
+{
+    "fields": {
+        "capabilities": [
+            2,
+            3,
+            1,
+            4,
+            5
+        ],
+        "location": 1,
+        "last_active": "2015-04-22T14:26:36.585"
+    },
+    "model": "ui.display",
+    "pk": 3
+},
+{
+    "fields": {
+        "n_number": "N13549627"
+    },
+    "model": "ui.displayeruser",
+    "pk": 1
+},
+{
+    "fields": {
+        "public": true,
+        "type": 1,
+        "user": [
+            "og402"
+        ],
+        "description": "Template task for displaying a single picture"
+    },
+    "model": "ui.task",
+    "pk": 5
+},
+{
+    "fields": {
+        "public": true,
+        "type": 2,
+        "user": [
+            "og402"
+        ],
+        "description": "A template task to display video"
+    },
+    "model": "ui.task",
+    "pk": 45
+},
+{
+    "fields": {
+        "public": false,
+        "type": 2,
+        "user": [
+            "og402"
+        ],
+        "description": "Chipmunk"
+    },
+    "model": "ui.task",
+    "pk": 46
+},
+{
+    "fields": {
+        "public": true,
+        "type": 4,
+        "user": [
+            "og402"
+        ],
+        "description": "Template task to display slideshow"
+    },
+    "model": "ui.task",
+    "pk": 50
+},
+{
+    "fields": {
+        "public": false,
+        "type": 4,
+        "user": [
+            "og402"
+        ],
+        "description": "Anime slideshow"
+    },
+    "model": "ui.task",
+    "pk": 53
+},
+{
+    "fields": {
+        "public": true,
+        "type": 5,
+        "user": [
+            "og402"
+        ],
+        "description": "Template task to create a video portal"
+    },
+    "model": "ui.task",
+    "pk": 55
+},
+{
+    "fields": {
+        "public": false,
+        "type": 5,
+        "user": [
+            "og402"
+        ],
+        "description": "Video portal"
+    },
+    "model": "ui.task",
+    "pk": 56
+},
+{
+    "fields": {
+        "public": false,
+        "type": 5,
+        "user": [
+            "og402"
+        ],
+        "description": "Video portal"
+    },
+    "model": "ui.task",
+    "pk": 57
+},
+{
+    "fields": {
+        "public": false,
+        "type": 5,
+        "user": [
+            "og402"
+        ],
+        "description": "123132"
+    },
+    "model": "ui.task",
+    "pk": 59
+},
+{
+    "fields": {
+        "public": false,
+        "type": 5,
+        "user": [
+            "og402"
+        ],
+        "description": "123132"
+    },
+    "model": "ui.task",
+    "pk": 60
+},
+{
+    "fields": {
+        "public": false,
+        "type": 5,
+        "user": [
+            "og402"
+        ],
+        "description": "Video portal"
+    },
+    "model": "ui.task",
+    "pk": 62
+},
+{
+    "fields": {
+        "name": "Cafeteria"
+    },
+    "model": "ui.location",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "Science Building"
+    },
+    "model": "ui.location",
+    "pk": 2
+}
+]

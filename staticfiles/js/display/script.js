@@ -51,7 +51,6 @@ $(function(){ //DOM Ready
 
         function tryCalling() {
             if (!window.existingCall || !window.existingCall.open) {
-                console.log("trying to call");
                 var call = peer.call(id_to_call, window.localStream);
                 step3(call);
             }
@@ -59,7 +58,6 @@ $(function(){ //DOM Ready
         }
 
         peer.on("open", function (id) {
-            console.log("Opened peer with id " + id);
             if (my_id == value["options"]["screens"]["value"][1]) {
                 tryCalling();
             }
@@ -81,7 +79,6 @@ $(function(){ //DOM Ready
 
         // Receiving a call
         peer.on('call', function(call){
-            console.log('Got a call');
             call.answer(window.localStream);
             step3(call);
         });
@@ -96,7 +93,6 @@ $(function(){ //DOM Ready
         $("#carousel .carousel-inner").append(element);
 
         var id_to_call = value["options"]["screens"]["value"][0] == my_id ? value["options"]["screens"]["value"][1] : value["options"]["screens"]["value"][0];
-        console.log("my_id: " + my_id + "; id_to_call: " + id_to_call);
 
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -171,12 +167,10 @@ $(function(){ //DOM Ready
                     var video = $('div.item.active video');
                     video.get(0).play();
                     video.get(0).onended = function (e) {
-                        console.log("video next");
                         $('.carousel').carousel('next');
                     }
                 } else {
                     setTimeout(function() {
-                        console.log("pic next");
                         $('.carousel').carousel('next');
                     }, getInterval());
                 }
@@ -223,7 +217,6 @@ $(function(){ //DOM Ready
     var updateJson = function() {
         $.getJSON( '/display_data', function (data) {
             if (JSON.stringify(data["tasks"]) != JSON.stringify(old_data["tasks"])) {
-                console.log(data);
                 $('.carousel-inner .item').remove();
                 $('#carousel').off('slid.bs.carousel');
                 var id = window.setTimeout(function() {}, 0);

@@ -2,7 +2,6 @@ var interval = 15000;
 
 function doActiveCheck() {
     $.getJSON( '/schedules_active_info', function (data) {
-                    console.log(data);
                     $("table#schedules_list tbody tr").each( function () {
                         var id = $(this).data("id");
                         var seconds = data[id]['time'];

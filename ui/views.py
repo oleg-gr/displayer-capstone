@@ -72,7 +72,6 @@ def display_heartbeat(request):
 @user_passes_test(is_display_check, redirect_field_name='/manage')
 def display_data(request):
     display = Display.get_data_for_display(request.user)
-    print display
     data = json.dumps(display)
     return HttpResponse(data, content_type='application/json')
 
@@ -118,9 +117,7 @@ def schedule(request):
         dates = data["dates"]
         options = data["options"]
         task_type = data["task_type"]
-        print data
         task_id = data.get("task_id", False)
-        print task_id
         if task_id:
             task = Task.objects.get(id = task_id)
             task.description = description
